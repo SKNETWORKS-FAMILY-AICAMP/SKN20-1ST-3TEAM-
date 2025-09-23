@@ -7,7 +7,39 @@ from selenium.webdriver.common.keys import Keys  # enter키 등을 입력하기�
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
 import time
+
+# 시작년월과 끝년월 설정
+START_YEAR = 2024
+START_MONTH = 9
+
+END_YEAR = 2024
+END_MONTH = 9
+
+def set_city_list() :
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    # table의 시군구를 담아오기 위한 list 생성
+    str_city_rows = '#sheet01-table > tbody > tr:nth-child(2) > td:nth-child(1) > div > div.GMPageOne > table > tbody > tr'
+    city_rows = soup.select(str_city_rows)
+
+    city_list = []
+
+    for i in city_rows :
+        rlg = ''
+        try :
+            i_list = i.select('td')
+            for j in i_list :
+                if j.text in ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '충북', '충남', '전남', '경북', '경남', '제주', '강원', '전북'] :
+                    rlg = j.text.strip()
+                elif not j.text in ['', '2025-08']:
+                    # print(j.text.strip())
+                    city_list.append(j.text)
+        except Exception as e:
+            print(e)
+
+    return city_list
 
 # URL 설정
 url = 'https://stat.molit.go.kr/portal/cate/statView.do?hRsId=58'
@@ -15,7 +47,7 @@ url = 'https://stat.molit.go.kr/portal/cate/statView.do?hRsId=58'
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service = service)
 driver.get(url)
-driver.maximize_window()
+# driver.maximize_window()
 time.sleep(5)
 
 # 시도별 자동차 등록 현황 조회
@@ -27,15 +59,11 @@ form_btn = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[2]/div[
 driver.execute_script('arguments[0].click()', form_btn)
 time.sleep(3)
 
-start_year = 2024
-start_month = 9
+# 선택을 위한 검색년월 (START부터)
+cur_year = START_YEAR
+cur_month = START_MONTH
 
-end_year = 2025
-end_month = 3
-
-cur_year = start_year
-cur_month = start_month
-
+# 전체 데이터를 담을 list 생성
 total_lists = []
 
 while True :
@@ -50,35 +78,45 @@ while True :
     time.sleep(0.5)
 
     # 조회 버튼
-    # //*[@id="main"]/div/div[2]/div[2]/div[3]/div/div[1]/div/div/div/button
     btn = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[2]/div[3]/div/div[1]/div/div/div/button')
     driver.execute_script("arguments[0].click()", btn)
     time.sleep(1.5)
 
+    city_list = set_city_list()
+    
+    # 데이터 가져오기
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     str_table_rows = '#sheet01-table > tbody > tr:nth-child(2) > td:nth-child(2) > div > div.GMPageOne > table > tbody > tr'
     month_rows = soup.select(str_table_rows)
-
-    # print(month_rows, '\n')
-    # print(month_rows.select('td')[1])
-
+    
     month_lists = []
 
-    for i in month_rows :
+    for idx, month_list in enumerate(month_rows) :
         temp_list = []
 
+        # 년월과 시군구 이름 추가
+        temp_list.append(f'{v_time}01')
+        temp_list.append(city_list[idx])
+        
+        # 데이터 추가 try
         try :
-            i_list = i.select('td')
+            i_list = month_list.select('td')
+            print(i_list)
             for j in i_list :
-                # print(j.text.strip())
-                temp_list.append(j.text.strip())
+                if not j.text == '' :
+                    temp_list.append(int(j.text.replace(',', '')))
         except Exception as e:
             print(e)
         
         month_lists.append(temp_list)
 
-    print(v_time, month_lists[1])
-
+    # input data 확인
+    for i in month_lists[1:] :
+        print(i)
+        pass
+    
+    # list에 데이터 추가
+    # 이 부분 MySQL에 INSERT 하도록 변경
     total_lists.append(month_lists)
     
     cur_month += 1
@@ -86,9 +124,7 @@ while True :
         cur_year += 1
         cur_month = 1
 
-    if cur_year * 100 + cur_month > end_year * 100 + end_month :
+    if cur_year * 100 + cur_month > END_YEAR * 100 + END_MONTH :
         break
 
-print(total_lists)
-
-time.sleep(10)
+time.sleep(2)
