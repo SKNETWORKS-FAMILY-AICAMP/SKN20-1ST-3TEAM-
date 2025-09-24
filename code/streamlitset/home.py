@@ -172,7 +172,7 @@ def show_info_page():
         '기타': ['기타']
     }
 
-    # 버튼 3개를 가로로 배치하기 위해 컬럼을 생성합니다.
+     # 버튼 3개를 가로로 배치하기 위해 컬럼을 생성합니다.
     col1, col2, col3 = st.columns(3)
 
     # 각 컬럼에 버튼을 추가합니다.
@@ -181,7 +181,15 @@ def show_info_page():
         if st.button('전체', use_container_width=True):
             st.session_state.view = '전체'
 
-#______________________________________________
+    with col2:
+        if st.button('현대', use_container_width=True):
+            st.session_state.view = '현대'
+
+    with col3:
+        if st.button('기아', use_container_width=True):
+            st.session_state.view = '기아'
+
+    # DB 연결 정보
     import mysql.connector
     from dotenv import load_dotenv
     import os
@@ -192,31 +200,11 @@ def show_info_page():
         'password': os.getenv("DB_PASSWORD"), 'database': 'sknfirst'
     }
 
-    with col2:
-        if st.button('현대', use_container_width=True):
-            st.session_state.view = '현대'
-            # 현대 FAQ DB 조회 및 화면 표시
-            conn = mysql.connector.connect(**db_config)
-            sql = "SELECT * FROM faq WHERE faq_company = '현대';"
-            df = pd.read_sql(sql, conn)
-            st.dataframe(df)
-            conn.close()
-
-    with col3:
-        if st.button('기아', use_container_width=True):
-            st.session_state.view = '기아'
-            # 추후 '기아' 버튼 클릭 시의 로직을 추가할 수 있습니다.
-            conn = mysql.connector.connect(**db_config)
-            sql = "SELECT * FROM faq WHERE faq_company = '기아';"
-            df = pd.read_sql(sql, conn)
-            st.dataframe(df)
-            conn.close()
-
-
-    # st.session_state의 'view' 값이 '전체'일 경우에만 아래 코드를 실행합니다.
+    # st.session_state의 'view' 값에 따라 다른 내용을 표시합니다.
     # .get()을 사용하여 초기 실행 시 오류가 발생하는 것을 방지합니다.
-    if st.session_state.get('view') == '전체':
-        
+    view_state = st.session_state.get('view')
+
+    if view_state == '전체':
         # 2개의 셀렉트 박스를 가로로 배치하기 위해 컬럼을 생성합니다.
         select_col1, select_col2 = st.columns(2)
 
@@ -235,15 +223,32 @@ def show_info_page():
                 label="소분류",
                 options=second_options
             )
-            query = f"SELECT * FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
-            conn = mysql.connector.connect(**db_config)
-            df = pd.read_sql(query, conn)
-            st.dataframe(df)
-            conn.close()
 
+        # with 블록 밖에서 DB 쿼리 및 데이터프레임 표시
+        query = f"SELECT * FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+        conn = mysql.connector.connect(**db_config)
+        df = pd.read_sql(query, conn)
+        st.dataframe(df, use_container_width=True) # use_container_width=True 추가
+        conn.close()
         
         # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
         st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
+
+    elif view_state == '현대':
+        # 현대 FAQ DB 조회 및 화면 표시
+        conn = mysql.connector.connect(**db_config)
+        sql = "SELECT * FROM faq WHERE faq_company = '현대';"
+        df = pd.read_sql(sql, conn)
+        st.dataframe(df, use_container_width=True)
+        conn.close()
+
+    elif view_state == '기아':
+        # 기아 FAQ DB 조회 및 화면 표시
+        conn = mysql.connector.connect(**db_config)
+        sql = "SELECT * FROM faq WHERE faq_company = '기아';"
+        df = pd.read_sql(sql, conn)
+        st.dataframe(df, use_container_width=True)
+        conn.close()
 
 # Streamlit 앱을 실행하기 위한 코드 (로컬 테스트 시 사용)
 # if __name__ == "__main__":
