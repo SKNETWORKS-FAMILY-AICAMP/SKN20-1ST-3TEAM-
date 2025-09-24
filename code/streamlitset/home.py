@@ -72,10 +72,10 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.title("자동차등록현황보고(Total Registered Motor Vehicles)")
+    st.header("2년간 자동차 등록 현황 분석")
 
     # 2. 부제목
-    st.subheader("본 화면은 ")
+    st.subheader("자동차등록현황보고(Total Registered Motor Vehicles) ")
 
     # 3. 자료 출처
     st.markdown("""
