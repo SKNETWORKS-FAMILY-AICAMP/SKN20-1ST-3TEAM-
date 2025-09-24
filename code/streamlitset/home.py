@@ -123,6 +123,38 @@ def show_data_page():
     })
     st.dataframe(df, use_container_width=True)
 
+#_______________________________________________________
+# 용도별 비중
+  
+    import plotly.express as px
+
+    st.title("용도별 비중")
+    st.write("관용.자가용.영업용 용도별 비중")
+
+    # 데이터
+    data = {"카테고리": ["관용", "자가용", "영업용"],
+            "값": [40,60, 20]}
+    df_pie = pd.DataFrame(data)
+
+    # 데이터 미리보기
+    st.dataframe(df_pie)
+
+    # 변수 정의
+    sizes = df_pie["값"]
+    labels = df_pie["카테고리"]
+
+    # 파이 차트
+    # fig, ax = plt.subplots(figsize=(3, 3), dpi=100)  # dpi 높이면 차트가 더 작아짐
+    # ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+    # ax.axis("equal")
+
+    fig = px.pie(df_pie, names="카테고리", values="값",
+                title="용도별 비중",
+                color_discrete_sequence=["skyblue", "lightgreen", "salmon"],)  # 색상 변경
+    st.plotly_chart(fig, use_container_width=False)
+
+#______________________________________________________
+
 
 def show_info_page():
     """FAQ(현대/기아) 페이지를 표시하는 함수"""
