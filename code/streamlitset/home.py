@@ -7,7 +7,7 @@ def main():
 
     # --- 페이지 기본 설정 ---
     st.set_page_config(
-        page_title="2년간 자동차 등록 현황 분석",
+        page_title="2개년 자동차 등록 현황 분석",
         page_icon="🚗",
         layout="wide"
     )
@@ -73,7 +73,7 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("🚗2년간 자동차 등록 현황 분석🚗")
+    st.header("🚗2개년 자동차 등록 현황 분석🚗")
     
 
     # 2. 부제목
