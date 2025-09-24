@@ -129,6 +129,63 @@ def show_info_page():
     st.title("FAQ(현대/기아)")
     st.write("이곳에 프로젝트에 대한 설명을 추가할 수 있습니다.")
     st.info("이 앱은 Streamlit을 사용하여 제작되었습니다.")
+    
+    faq_categories = {
+        '홈페이지': ['회원', '로그인', '기타'],
+        '블루링크': ['가입/해지/변경', '서비스 이용', '요금', '오류 및 A/S'],
+        '모젠서비스': ['사용법', '이용단말'],
+        '현대 디지털 키': ['일반'],
+        '차량구매': ['일반'],
+        '차량정비': ['일반'],
+        '기타': ['기타']
+    }
+
+    # 버튼 3개를 가로로 배치하기 위해 컬럼을 생성합니다.
+    col1, col2, col3 = st.columns(3)
+
+    # 각 컬럼에 버튼을 추가합니다.
+    # 버튼 클릭 상태를 session_state에 저장하여 페이지가 새로고침 되어도 유지되도록 합니다.
+    with col1:
+        if st.button('전체', use_container_width=True):
+            st.session_state.view = '전체'
+    with col2:
+        if st.button('현대', use_container_width=True):
+            st.session_state.view = '현대'
+            # 추후 '현대' 버튼 클릭 시의 로직을 추가할 수 있습니다.
+    with col3:
+        if st.button('기아', use_container_width=True):
+            st.session_state.view = '기아'
+            # 추후 '기아' 버튼 클릭 시의 로직을 추가할 수 있습니다.
+
+    # st.session_state의 'view' 값이 '전체'일 경우에만 아래 코드를 실행합니다.
+    # .get()을 사용하여 초기 실행 시 오류가 발생하는 것을 방지합니다.
+    if st.session_state.get('view') == '전체':
+        
+        # 2개의 셀렉트 박스를 가로로 배치하기 위해 컬럼을 생성합니다.
+        select_col1, select_col2 = st.columns(2)
+
+        with select_col1:
+            # 첫 번째 셀렉트 박스를 생성합니다. (옵션은 딕셔너리의 키 값들)
+            first_options = list(faq_categories.keys())
+            first_selection = st.selectbox(
+                label="대분류",
+                options=first_options
+            )
+
+        with select_col2:
+            # 첫 번째 선택에 따라 두 번째 셀렉트 박스의 옵션을 동적으로 결정합니다.
+            second_options = faq_categories[first_selection]
+            second_selection = st.selectbox(
+                label="소분류",
+                options=second_options
+            )
+        
+        # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
+        st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
+
+# Streamlit 앱을 실행하기 위한 코드 (로컬 테스트 시 사용)
+# if __name__ == "__main__":
+#     show_info_page()
 
 
 if __name__ == "__main__":
