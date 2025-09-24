@@ -226,11 +226,14 @@ def show_info_page():
 
         # with 블록 밖에서 DB 쿼리 및 데이터프레임 표시
         # SELECT 절을 수정하여 원하는 컬럼만 선택합니다.
-        query = f"SELECT faq_question, faq_answer FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+        query = f"SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
         conn = mysql.connector.connect(**db_config)
         df = pd.read_sql(query, conn)
-        st.dataframe(df, use_container_width=True)
-        conn.close()
+        st.write("---") # 구분선 추가
+        for index, row in df.iterrows():
+            faq_company = row['faq_company']
+            with st.expander(f"Q.[{faq_company}] {row['faq_question']}"):
+                st.write(row['faq_answer'])
         
         # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
         st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
@@ -240,16 +243,20 @@ def show_info_page():
         conn = mysql.connector.connect(**db_config)
         sql = "SELECT faq_question, faq_answer FROM faq WHERE faq_company = '현대';"
         df = pd.read_sql(sql, conn)
-        st.dataframe(df, use_container_width=True)
-        conn.close()
+        st.write("---") # 구분선 추가
+        for index, row in df.iterrows():
+            with st.expander(f"Q. {row['faq_question']}"):
+                st.write(row['faq_answer'])
 
     elif view_state == '기아':
         # 기아 FAQ DB 조회 및 화면 표시
         conn = mysql.connector.connect(**db_config)
         sql = "SELECT faq_question, faq_answer FROM faq WHERE faq_company = '기아';"
         df = pd.read_sql(sql, conn)
-        st.dataframe(df, use_container_width=True)
-        conn.close()
+        st.write("---") # 구분선 추가
+        for index, row in df.iterrows():
+            with st.expander(f"Q. {row['faq_question']}"):
+                st.write(row['faq_answer'])
 
 # Streamlit 앱을 실행하기 위한 코드 (로컬 테스트 시 사용)
 # if __name__ == "__main__":
