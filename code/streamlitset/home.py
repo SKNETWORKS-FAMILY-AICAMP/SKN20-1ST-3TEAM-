@@ -78,7 +78,11 @@ def show_home_page():
     st.subheader("본 화면은 ")
 
     # 3. 자료 출처
-    st.markdown('<p class="source-text">자료출처: OOO 데이터</p>', unsafe_allow_html=True)
+    st.markdown("""
+    <p class="source">자료 출처 : 
+    <a href="https://stat.molit.go.kr/portal/cate/statView.do?hRsId=58&hFormId=5498&hSelectId=5559&hPoint=00&hAppr=1&hDivEng=&oFileName=&rFileName=&midpath=&sFormId=5498&sStyleNum=1&settingRadio=xlsx" target="_blank">
+    국토교통 통계 누리 데이터</a></p>
+""", unsafe_allow_html=True)
 
     # 4. 대시보드 (수정된 부분: 막대 차트 -> 표)
     st.write("---") # 구분선
