@@ -5,18 +5,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import time
-
-# --- [추가] DB 연동을 위한 라이브러리 ---
 import mysql.connector
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 db_config = {
-    'host': os.getenv("DB_HOST"), 'user': os.getenv("DB_USER"),
-    'password': os.getenv("DB_PASSWORD"), 'database': os.getenv("DB_NAME"),
-    'port': os.getenv("DB_PORT")
-}
+    'host': os.getenv("DB_HOST"),
+    'user': os.getenv("DB_USER"),
+    'password': os.getenv("DB_PASSWORD"),
+    'database': os.getenv("DB_NAME"),
+    'port': os.getenv("DB_PORT") }
 
 sql = """
     INSERT INTO car_registeration 
@@ -29,11 +28,18 @@ sql = """
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     ON DUPLICATE KEY UPDATE 
     passenger_official=VALUES(passenger_official), passenger_private=VALUES(passenger_private),
-    passenger_commercial=VALUES(passenger_commercial), passenger_subtotal=VALUES(passenger_subtotal)
+    passenger_commercial=VALUES(passenger_commercial), passenger_subtotal=VALUES(passenger_subtotal),
+    van_official=VALUES(van_official), van_private=VALUES(van_private),
+    van_commercial=VALUES(van_commercial), van_subtotal=VALUES(van_subtotal),
+    truck_official=VALUES(truck_official), truck_private=VALUES(truck_private),
+    truck_commercial=VALUES(truck_commercial), truck_subtotal=VALUES(truck_subtotal),
+    special_official=VALUES(special_official), special_private=VALUES(special_private),
+    special_commercial=VALUES(special_commercial), special_subtotal=VALUES(special_subtotal),
+    total_official=VALUES(total_official), total_private=VALUES(total_private),
+    total_commercial=VALUES(total_commercial), total_subtotal=VALUES(total_subtotal)
 """
 
-# -------------------------크롤링----------------------------------------
-
+# ----
 # 시작년월과 끝년월 설정
 START_YEAR = 2023
 START_MONTH = 8
@@ -124,15 +130,15 @@ try:
                     if not j.text == '':
                         temp_list.append(int(j.text.replace(',', '')))
             except Exception as e:
-                print(f"데이터 파싱 중 오류: {e}")
+                print(e)
         
-            if len(temp_list) > 2: # 파싱된 데이터가 있을 경우에만 추가
+            if len(temp_list) > 2:
                 month_lists.append(temp_list)
 
-        # --- [수정] 이 부분을 DB INSERT 로직으로 교체 ---
+
         for row_data in month_lists:
             try:
-                # [날짜, 시군구, 숫자...] 형식의 데이터를 분리
+                # [날짜, 시군구, 숫자...] 형식의 데이터 분리
                 date_str = row_data[0]
                 sigungu_name = row_data[1]
                 numeric_data = row_data[2:]
@@ -146,17 +152,17 @@ try:
                 if region_id is None:
                     continue # region 테이블에 없는 지역이면 건너뛰기
 
-                # 최종 데이터 조립
                 data_to_insert = (report_month, region_id) + tuple(numeric_data)
 
-                if len(data_to_insert) == 22: # 컬럼 수 확인
+                if len(data_to_insert) == 22: #
                     cursor.execute(sql, data_to_insert)
                 
             except Exception as e:
-                print(f"DB 저장 중 오류: {e}")
+                print(e)
+        
         
         conn.commit()
-        print(f"✔️ {cur_year}년 {cur_month}월 데이터가 DB에 저장되었습니다.")
+        print(f"{cur_year}년 {cur_month}월 데이터 저장됨")
         
         cur_month += 1
         if cur_month > 12 :
@@ -169,9 +175,9 @@ try:
     time.sleep(2)
 
 finally:
-    # --- [추가] 모든 작업 완료 후 DB 연결 종료 ---
     if 'conn' in locals() and conn.is_connected():
         cursor.close()
         conn.close()
-        print("\n🔌 MySQL 연결이 최종적으로 종료되었습니다.")
     driver.quit()
+
+
