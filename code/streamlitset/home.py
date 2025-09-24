@@ -86,7 +86,7 @@ def show_home_page():
 
     # 4. 대시보드 (수정된 부분: 막대 차트 -> 표)
     st.write("---") # 구분선
-    st.subheader("분기별 판매 데이터 표")
+    st.subheader("지역별 자동차 등록 현황 대시보드")
 
     # 표 데이터 생성
     # columns로 열 제목, index로 행 제목을 지정합니다.
