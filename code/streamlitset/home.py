@@ -121,44 +121,115 @@ def show_home_page():
 
 def show_data_page():
     """차종별 합계 및 비중 차트 페이지를 표시하는 함수"""
-    st.title("상세 데이터 보기")
-    st.write("이곳에 상세 데이터를 표시하는 표나 차트를 추가할 수 있습니다.")
+    st.title("📊 차종별/용도별 등록 비중 분석")
+    st.write("분석하고 싶은 월을 선택하면 해당 월의 차종별, 용도별 등록 비중을 파이 차트로 보여줍니다.")
+    st.write("---")
 
-    df = pd.DataFrame({
-        '첫 번째 컬럼': [1, 2, 3, 4],
-        '두 번째 컬럼': [10, 20, 30, 40],
-    })
-    st.dataframe(df, use_container_width=True)
-
-#_______________________________________________________
-# 용도별 비중
-  
+    # 필요한 라이브러리 import
     import plotly.express as px
+    import mysql.connector
+    from dotenv import load_dotenv
+    import os
 
-    st.title("용도별 비중")
-    st.write("관용.자가용.영업용 용도별 비중")
+    # --- 1. DB 연결 설정 ---
+    load_dotenv()
+    db_config = {
+        'host': os.getenv("DB_HOST"),
+        'user': os.getenv("DB_USER"),
+        'password': os.getenv("DB_PASSWORD"),
+        'database': 'sknfirst'
+    }
 
-    # 데이터
-    data = {"카테고리": ["관용", "자가용", "영업용"],
-            "값": [40,60, 20]}
-    df_pie = pd.DataFrame(data)
+    # DB 연결 및 데이터 조회를 위한 try-except-finally 블록
+    conn = None
+    try:
+        conn = mysql.connector.connect(**db_config)
 
-    # 데이터 미리보기
-    st.dataframe(df_pie)
+        # --- 2. 월 선택 UI 생성 ---
+        # DB에서 선택 가능한 'report_month' 목록을 가져옵니다.
+        # ※ 아래 쿼리의 'car_registrations' 부분은 실제 테이블 이름으로 변경해야 합니다.
+        query_months = "SELECT DISTINCT report_month FROM car_registeration ORDER BY report_month DESC"
+        month_df = pd.read_sql(query_months, conn)
 
-    # 변수 정의
-    sizes = df_pie["값"]
-    labels = df_pie["카테고리"]
+        if month_df.empty:
+            st.warning("데이터베이스에서 조회할 수 있는 월 정보가 없습니다.")
+            return
 
-    # 파이 차트
-    # fig, ax = plt.subplots(figsize=(3, 3), dpi=100)  # dpi 높이면 차트가 더 작아짐
-    # ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-    # ax.axis("equal")
+        available_months = month_df['report_month'].tolist()
+        selected_month = st.selectbox("🗓️ 분석할 월을 선택하세요:", options=available_months)
 
-    fig = px.pie(df_pie, names="카테고리", values="값",
-                title="용도별 비중",
-                color_discrete_sequence=["skyblue", "lightgreen", "salmon"],)  # 색상 변경
-    st.plotly_chart(fig, use_container_width=False)
+        # --- 3. 선택된 월의 데이터 가져오기 ---
+        if selected_month:
+            # 사용자가 선택한 월에 해당하는 데이터를 DB에서 조회합니다.
+            # ※ 아래 쿼리의 'car_registrations' 부분은 실제 테이블 이름으로 변경해야 합니다.
+            query_data = f"""
+                SELECT
+                    passenger_official, passenger_private, passenger_commercial,
+                    van_official, van_private, van_commercial,
+                    truck_official, truck_private, truck_commercial,
+                    special_official, special_private, special_commercial
+                FROM car_registeration
+                WHERE report_month = '{selected_month}'
+            """
+            data_df = pd.read_sql(query_data, conn)
+
+            if data_df.empty:
+                st.warning(f"'{selected_month}'에 대한 데이터가 없습니다.")
+                return
+
+            # 조회된 데이터의 첫 번째 행을 사용합니다.
+            vehicle_data = data_df.iloc[0]
+
+            # --- 4. 파이 차트 생성 및 표시 ---
+            st.subheader(f"'{selected_month}' 차종별 용도 비중")
+
+            # 차트 생성을 위한 헬퍼 함수 (코드 중복 방지)
+            def create_pie_chart(data, title, categories):
+                """데이터를 받아 Plotly 파이 차트를 생성하는 함수"""
+                pie_data = {
+                    "용도": ["관용", "자가용", "영업용"],
+                    "대수": [data[categories[0]], data[categories[1]], data[categories[2]]]
+                }
+                df_pie = pd.DataFrame(pie_data)
+
+                fig = px.pie(df_pie,
+                             names="용도",
+                             values="대수",
+                             title=f"<b>{title}</b>",
+                             color_discrete_sequence=px.colors.sequential.Blues_r,
+                             hole=0.3) # 도넛 차트 효과
+                fig.update_traces(textposition='inside', textinfo='percent+label', pull=[0.05, 0, 0])
+                fig.update_layout(title_x=0.5) # 제목 가운데 정렬
+                return fig
+
+            # 2x2 그리드로 차트들을 배치합니다.
+            col1, col2 = st.columns(2)
+            col3, col4 = st.columns(2)
+
+            with col1:
+                fig_passenger = create_pie_chart(vehicle_data, "승용차", ['passenger_official', 'passenger_private', 'passenger_commercial'])
+                st.plotly_chart(fig_passenger, use_container_width=True)
+
+            with col2:
+                fig_van = create_pie_chart(vehicle_data, "승합차", ['van_official', 'van_private', 'van_commercial'])
+                st.plotly_chart(fig_van, use_container_width=True)
+
+            with col3:
+                fig_truck = create_pie_chart(vehicle_data, "화물차", ['truck_official', 'truck_private', 'truck_commercial'])
+                st.plotly_chart(fig_truck, use_container_width=True)
+
+            with col4:
+                fig_special = create_pie_chart(vehicle_data, "특수차", ['special_official', 'special_private', 'special_commercial'])
+                st.plotly_chart(fig_special, use_container_width=True)
+
+    except mysql.connector.Error as err:
+        st.error(f"데이터베이스 연결에 실패했습니다: {err}")
+        st.info("`.env` 파일의 DB 연결 정보를 확인하거나 MySQL 서버가 실행 중인지 확인해주세요.")
+    finally:
+        # --- 5. DB 연결 종료 ---
+        if conn and conn.is_connected():
+            conn.close()
+
 
 #______________________________________________________
 
@@ -268,6 +339,7 @@ def show_info_page():
 # Streamlit 앱을 실행하기 위한 코드 (로컬 테스트 시 사용)
 # if __name__ == "__main__":
 #     show_info_page()
+
 
 
 if __name__ == "__main__":
