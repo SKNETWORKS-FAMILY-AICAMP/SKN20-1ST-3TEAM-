@@ -7,7 +7,7 @@ def main():
 
     # --- 페이지 기본 설정 ---
     st.set_page_config(
-        page_title="2개년 자동차 등록 현황 분석",
+        page_title="2년간 자동차 등록 현황 분석",
         page_icon="🚗",
         layout="wide"
     )
@@ -73,7 +73,7 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("🚗2개년 자동차 등록 현황 분석🚗")
+    st.header("🚗2년간 자동차 등록 현황 분석🚗")
     
 
     # 2. 부제목
@@ -180,14 +180,38 @@ def show_info_page():
     with col1:
         if st.button('전체', use_container_width=True):
             st.session_state.view = '전체'
+
+#______________________________________________
+    import mysql.connector
+    from dotenv import load_dotenv
+    import os
+
+    load_dotenv()
+    db_config = {
+        'host': os.getenv("DB_HOST"), 'user': os.getenv("DB_USER"),
+        'password': os.getenv("DB_PASSWORD"), 'database': 'sknfirst'
+    }
+
     with col2:
         if st.button('현대', use_container_width=True):
             st.session_state.view = '현대'
-            # 추후 '현대' 버튼 클릭 시의 로직을 추가할 수 있습니다.
+            # 현대 FAQ DB 조회 및 화면 표시
+            conn = mysql.connector.connect(**db_config)
+            sql = "SELECT * FROM faq WHERE faq_company = '현대';"
+            df = pd.read_sql(sql, conn)
+            st.dataframe(df)
+            conn.close()
+
     with col3:
         if st.button('기아', use_container_width=True):
             st.session_state.view = '기아'
             # 추후 '기아' 버튼 클릭 시의 로직을 추가할 수 있습니다.
+            conn = mysql.connector.connect(**db_config)
+            sql = "SELECT * FROM faq WHERE faq_company = '기아';"
+            df = pd.read_sql(sql, conn)
+            st.dataframe(df)
+            conn.close()
+
 
     # st.session_state의 'view' 값이 '전체'일 경우에만 아래 코드를 실행합니다.
     # .get()을 사용하여 초기 실행 시 오류가 발생하는 것을 방지합니다.
@@ -211,6 +235,12 @@ def show_info_page():
                 label="소분류",
                 options=second_options
             )
+            query = f"SELECT * FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+            conn = mysql.connector.connect(**db_config)
+            df = pd.read_sql(query, conn)
+            st.dataframe(df)
+            conn.close()
+
         
         # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
         st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
