@@ -7,7 +7,8 @@ def main():
 
     # --- 페이지 기본 설정 ---
     st.set_page_config(
-        page_title="Streamlit 대시보드 예제",
+        page_title="2년간 자동차 등록 현황 분석",
+        page_icon="🚗",
         layout="wide"
     )
 
@@ -42,18 +43,18 @@ def main():
 
     # --- 사이드바 (왼쪽 메뉴) ---
     with st.sidebar:
-        st.header("메뉴")
+        st.header("📌메뉴")
 
         # st.session_state를 사용하여 현재 페이지를 추적합니다.
         if 'page' not in st.session_state:
             st.session_state.page = 'home' # 초기 페이지 설정
 
         # 각 버튼을 누르면 session_state의 값을 변경합니다.
-        if st.button(" 홈 ", use_container_width=True):
+        if st.button("🏠홈", use_container_width=True):
             st.session_state.page = 'home'
-        if st.button("차종별 합계 및 비중", use_container_width=True):
+        if st.button("📊차종별 합계 및 비중", use_container_width=True):
             st.session_state.page = 'data'
-        if st.button("FAQ(현대/기아)", use_container_width=True):
+        if st.button("❓FAQ(현대/기아)", use_container_width=True):
             st.session_state.page = 'info'
 
     # --- 메인 창 (오른쪽 콘텐츠) ---
@@ -72,7 +73,8 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("2년간 자동차 등록 현황 분석")
+    st.header("🚗2년간 자동차 등록 현황 분석🚗")
+    
 
     # 2. 부제목
     st.subheader("자동차등록현황보고(Total Registered Motor Vehicles) ")
