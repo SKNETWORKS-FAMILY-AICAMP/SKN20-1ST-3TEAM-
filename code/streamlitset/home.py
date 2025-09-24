@@ -225,10 +225,11 @@ def show_info_page():
             )
 
         # with 블록 밖에서 DB 쿼리 및 데이터프레임 표시
-        query = f"SELECT * FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+        # SELECT 절을 수정하여 원하는 컬럼만 선택합니다.
+        query = f"SELECT faq_question, faq_answer FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
         conn = mysql.connector.connect(**db_config)
         df = pd.read_sql(query, conn)
-        st.dataframe(df, use_container_width=True) # use_container_width=True 추가
+        st.dataframe(df, use_container_width=True)
         conn.close()
         
         # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
@@ -237,7 +238,7 @@ def show_info_page():
     elif view_state == '현대':
         # 현대 FAQ DB 조회 및 화면 표시
         conn = mysql.connector.connect(**db_config)
-        sql = "SELECT * FROM faq WHERE faq_company = '현대';"
+        sql = "SELECT faq_question, faq_answer FROM faq WHERE faq_company = '현대';"
         df = pd.read_sql(sql, conn)
         st.dataframe(df, use_container_width=True)
         conn.close()
@@ -245,7 +246,7 @@ def show_info_page():
     elif view_state == '기아':
         # 기아 FAQ DB 조회 및 화면 표시
         conn = mysql.connector.connect(**db_config)
-        sql = "SELECT * FROM faq WHERE faq_company = '기아';"
+        sql = "SELECT faq_question, faq_answer FROM faq WHERE faq_company = '기아';"
         df = pd.read_sql(sql, conn)
         st.dataframe(df, use_container_width=True)
         conn.close()
