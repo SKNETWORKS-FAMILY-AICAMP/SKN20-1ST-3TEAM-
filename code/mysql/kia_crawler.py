@@ -33,9 +33,9 @@ try:
         charset='utf8'
     )
     cursor = conn.cursor()
-    print("MySQL 데이터베이스 연결 성공! ✅")
+    print("연결")
 except pymysql.MySQLError as e:
-    print(f"MySQL 연결 오류: {e} 😥")
+    print(e)
     exit()
 
 
@@ -59,6 +59,7 @@ sql = """
         %s, %s, %s, %s, %s
     )
 """
+
 
 faq_list = []
 pag_num = 1
@@ -118,7 +119,7 @@ try:
     print("DB삽입 완료")
 
 except Exception as e:
-    print(f"에러: {e}")
+    print(e})
     if conn:
         conn.rollback() 
 

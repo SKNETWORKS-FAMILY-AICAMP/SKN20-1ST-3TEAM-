@@ -13,15 +13,14 @@ import pymysql
 import os
 from dotenv import load_dotenv
 
-# .env 파일 로드 및 DB 접속 정보 가져오기
+
 load_dotenv()
 DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_NAME = os.getenv('DB_NAME')
-DB_PORT = os.getenv('DB_PORT', 3306) # 기본값 3306
+DB_PORT = os.getenv('DB_PORT', 3306) 
 
-# MySQL 연결 설정
 conn = None
 cursor = None
 try:
@@ -34,21 +33,22 @@ try:
         charset='utf8'
     )
     cursor = conn.cursor()
-    print("MySQL 데이터베이스 연결 성공!")
+    print("연결")
 except pymysql.MySQLError as e:
-    print(f"MySQL 연결 오류: {e}")
+    print(e)
     exit()
 
+# -----
 # URL 설정
 url = 'https://www.hyundai.com/kr/ko/faq.html'
-# 웹 드라이버 설치 및 최신버전 유지
+
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service = service)
 driver.get(url)
 driver.maximize_window()
 time.sleep(3)
 
-# 데이터를 저장할 테이블의 INSERT 쿼리
+# INSERT query
 sql = """
     INSERT INTO sknfirst.faq (
         faq_company, faq_major_category, faq_sub_category, faq_question, faq_answer
@@ -84,7 +84,7 @@ try:
 
             data_to_insert.append(tuple(temp_list))
         
-        # MySQL에 데이터 삽입
+        # 데이터 삽입
         if data_to_insert:
             cursor.executemany(sql, data_to_insert)
             conn.commit()
@@ -96,10 +96,10 @@ try:
             pass
         time.sleep(3)
     
-    print("모든 FAQ 데이터가 성공적으로 MySQL에 삽입됨")
+    print("DB삽입 완료")
 
 except Exception as e:
-    print(f"크롤링 또는 데이터베이스 삽입 중 오류 발생: {e}")
+    print(e)
     if conn:
         conn.rollback() 
 
