@@ -236,14 +236,15 @@ def show_data_page():
 
 def show_info_page():
     """FAQ(현대/기아) 페이지를 표시하는 함수"""
-    st.title("FAQ(현대/기아)")
-    st.write("이곳에 프로젝트에 대한 설명을 추가할 수 있습니다.")
-    st.info("이 앱은 Streamlit을 사용하여 제작되었습니다.")
+    st.title("FAQ")
+    
+    st.info("현대/기아 자동차 관련 질문과 답변을 제공합니다.")
     
     faq_categories = {
-        '홈페이지': ['회원', '로그인', '기타'],
-        '블루링크': ['가입/해지/변경', '서비스 이용', '요금', '오류 및 A/S'],
-        '모젠서비스': ['사용법', '이용단말'],
+        '전체': ['전체'],
+        '홈페이지': ['전체', '회원', '로그인', '기타'],
+        '블루링크': ['전체', '가입/해지/변경', '서비스 이용', '요금', '오류 및 A/S'],
+        '모젠서비스': ['전체', '사용법', '이용단말'],
         '현대 디지털 키': ['일반'],
         '차량구매': ['일반'],
         '차량정비': ['일반'],
@@ -282,7 +283,7 @@ def show_info_page():
     # .get()을 사용하여 초기 실행 시 오류가 발생하는 것을 방지합니다.
     view_state = st.session_state.get('view')
 
-    if view_state == '전체':
+    if view_state == '현대':
         # 2개의 셀렉트 박스를 가로로 배치하기 위해 컬럼을 생성합니다.
         select_col1, select_col2 = st.columns(2)
 
@@ -304,7 +305,38 @@ def show_info_page():
 
         # with 블록 밖에서 DB 쿼리 및 데이터프레임 표시
         # SELECT 절을 수정하여 원하는 컬럼만 선택합니다.
-        query = f"SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+        query = f"SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_company = '현대' AND faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+        
+        if view_state == '현대' :
+            if not first_selection == '전체' :
+                if not second_selection == '전체' :
+                    query = f' \
+                            SELECT faq_company \
+                                , faq_question \
+                                , faq_answer \
+                            FROM faq \
+                            WHERE faq_company = "현대" \
+                            AND faq_major_category = "{first_selection}" \
+                            AND faq_sub_category = "{second_selection}" \
+                            '
+                else:
+                    query = f' \
+                            SELECT faq_company \
+                                , faq_question \
+                                , faq_answer \
+                            FROM faq \
+                            WHERE faq_company = "현대" \
+                            AND faq_major_category = "{first_selection}" \
+                            '
+            else :
+                query = '''
+                        SELECT faq_company
+                            , faq_question
+                            , faq_answer
+                        FROM faq
+                        WHERE faq_company = "현대"
+                        '''
+                
         conn = mysql.connector.connect(**db_config)
         df = pd.read_sql(query, conn)
         st.write("---") # 구분선 추가
@@ -316,10 +348,10 @@ def show_info_page():
         # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
         st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
 
-    elif view_state == '현대':
-        # 현대 FAQ DB 조회 및 화면 표시
+    elif view_state == '전체':
+        # 전체 FAQ DB 조회 및 화면 표시
         conn = mysql.connector.connect(**db_config)
-        sql = "SELECT faq_question, faq_answer FROM faq WHERE faq_company = '현대';"
+        sql = "SELECT faq_question, faq_answer FROM faq;"
         df = pd.read_sql(sql, conn)
         st.write("---") # 구분선 추가
         for index, row in df.iterrows():

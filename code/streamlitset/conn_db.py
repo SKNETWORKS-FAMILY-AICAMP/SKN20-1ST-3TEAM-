@@ -12,7 +12,7 @@ def get_connection():
     return mysql.connect(
                 host = '127.0.0.1',
                 user = 'root',
-                password = 'root1234',
+                password = '123456',
                 port = 3306,
                 database = 'sknfirst',
                 cursorclass=mysql.cursors.DictCursor
