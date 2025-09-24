@@ -42,7 +42,7 @@
 - `region` TABLE: 시도, 시군구
 - `faq` TABLE: 브랜드(현대/기아), 카테고리, 질문·답변 저장
 > ### ERD
-> ![initial](https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/ERD.png)
+<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/ERD.png?raw=true" width="700">
 
 ## 2.3. Backend (Python)
 - 크롤링 스크립트 실행 후 DB 적재
@@ -50,6 +50,11 @@
 ## 2.4. Frontend (Streamlit)
 - 차량등록현황 조회:  기간·지역 필터링 + 테이블/차트 시각화
 - 현대·기아 FAQ 검색:  카테고리별/전체 검색 지원
+
+<br>
+
+> ### Architecture Diagram
+> <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/Architecture_Diagram.png" width="500">
 
 ---
 
