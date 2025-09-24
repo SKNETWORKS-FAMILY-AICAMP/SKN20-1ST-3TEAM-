@@ -111,7 +111,7 @@ def show_home_page():
 
 
 def show_data_page():
-    """상세 데이터 페이지를 표시하는 함수"""
+    """차종별 합계 및 비중 차트 페이지를 표시하는 함수"""
     st.title("상세 데이터 보기")
     st.write("이곳에 상세 데이터를 표시하는 표나 차트를 추가할 수 있습니다.")
 
@@ -123,8 +123,8 @@ def show_data_page():
 
 
 def show_info_page():
-    """프로젝트 정보 페이지를 표시하는 함수"""
-    st.title("프로젝트 정보")
+    """FAQ(현대/기아) 페이지를 표시하는 함수"""
+    st.title("FAQ(현대/기아)")
     st.write("이곳에 프로젝트에 대한 설명을 추가할 수 있습니다.")
     st.info("이 앱은 Streamlit을 사용하여 제작되었습니다.")
 
