@@ -1,29 +1,25 @@
-# SKN20-1ST-3TEAM
+![header](https://capsule-render.vercel.app/api?type=venom&height=150&color=gradient&text=SKN20-1st%20Project%20-%203TEAM&section=header&desc=/&descSize=20&textBg=false&fontSize=65&fontColor=FFAA28)
 
-## SK Networks Family AI Camp 1st Project
-
----
-
-## 1. 팀 소개
-**팀명: 할수있어조**  
-**팀원**:  
+# Team Introduction 
+**Team Name: 해야만하조**  
+**Members**:  
 | 오학성 | 홍혜원 | 최소영 | 권규리 | 이승규 |
 |--------|--------|--------|--------|--------|
 
 ---
 
-## 2. Project Overview
+# Project Overview
 
-### 2.1. Introduction
+## Introduction
 - **전국 차량등록 현황 및 FAQ 확인 시스템**
-- 대한민국 국토교통부의 자동차등록 현황 데이터와 현대·기아 공식 홈페이지에서 수집한 FAQ 데이터를 기반으로,
+- 대한민국 국토교통부의 자동차등록 현황 데이터와 현대·기아 공식 홈페이지에서 수집한 FAQ 데이터를 기반으로, <br>
 <mark>지역별·기간별 차량 등록 추이</mark>와 <mark>브랜드별 자주 묻는 질문(FAQ)</mark>을 함께 제공하는 웹 대시보드 시스템입니다.
 
-### 2.2. Purpose
+## Purpose
 - 매월 발표되는 차량 등록 데이터를 크롤링하여 시각화까지 진행하여 누구나 쉽게 차량등록 현황을 확인할 수 있는 환경 제공
 - 제조사별 고객 FAQ를 통합하여 FAQ 검색 편의성 제공 
 
-### 2.3. Key Features
+## Key Features Summary
 - 최신 데이터 반영 (2023.08 ~ 2025.08)
 - 지역별(시도/시군구), 기간별 필터링
 - 현대·기아 FAQ 검색 (카테고리별/전체 검색)
@@ -31,11 +27,11 @@
 
 ---
 
-## 3. System Architecture
+# System Architecture
 
-### 3.1. Architecture Overview  
+## Architecture Overview  
 
-#### 3.2. Data Crawling
+### Data Crawling
 #### 대한민국 국토교통 통계누리
 - 자동차등록 현황 보고
 - 월별 데이터 크롤링 (2023.08 ~ 2025.08)
@@ -48,24 +44,24 @@
 - `faq` TABLE: 브랜드(현대/기아), 카테고리, 질문·답변 저장
 ##### ERD
 
-#### Backend (Python)
+### Backend (Python)
 - 크롤링 스크립트 실행 후 DB 적재
 - Streamlit과 연동해 DB 조회 및 쿼리 처리
-#### Frontend (Streamlit)
+### Frontend (Streamlit)
 - 차량등록현황 조회: 기간·지역 필터링 + 테이블/차트 시각화
 - 현대·기아 FAQ 검색: 카테고리별/전체 검색 지원
 
 ---
 
-## 4. KEY Features
-### 4.1 차량등록 현황 조회
-#### 필터링 기능
+# KEY Features
+## 차량등록 현황 조회
+### 필터링 기능
 - 기간: 월별 선택 (2023.08 ~ 2025.08)
 - 지역: 시도/시군구 단위 선택 가능 (region 테이블 기반)
 - 시각화: 차량 등록 현황을 표(Table) 및 **차트(Line/Bar/Pie)**로 제공
 - 차량 종류별(승용, 승합, 화물, 특수) 및 용도별(관용, 자가용, 영업용, 계) 분포 확인 가능
 
-#### 4.2. FAQ 검색
+### FAQ 검색
 - 브랜드별 FAQ 제공
 - 현대(☰ Hyundai) / 기아(☰ Kia) / 전체(All) 검색 가능
 - 카테고리 기반 필터링
@@ -73,24 +69,25 @@
 
 ---
 
-## 5. Requirements Specification
----
-### 5.1. User Requirements  
-#### 차량등록 현황 조회
+# Requirements Specification
+
+## User Requirements  
+
+### 차량등록 현황 조회
 - 사용자는 특정 **기간(월별)**과 **지역(시도/시군구)**을 선택해 차량 등록 현황을 조회할 수 있다.
 - 조회 결과는 표와 그래프 형태로 제공된다.
-#### 차종별/용도별 분석
+### 차종별/용도별 분석
 - 사용자는 승용, 승합, 화물, 특수 차량 등록 현황을 확인할 수 있다.
 - 각 차종은 관용, 자가용, 영업용, 계 단위로 구분된다.
-#### FAQ 검색
+### FAQ 검색
 - 사용자는 현대, 기아 브랜드별 FAQ를 검색할 수 있다.
 - 사용자는 카테고리별 FAQ를 조회하거나 전체 검색을 수행할 수 있다.
 - 검색 결과에서 질문과 답변을 확인할 수 있다.
-#### 편의성
+### 편의성
 - 사용자는 웹 기반 UI(Streamlit)를 통해 별도의 설치 없이 브라우저에서 시스템을 사용할 수 있다.
 - 필터 및 검색은 즉시 반영되어 결과가 출력된다.
 
-### 5.2. Functional Requirements
+## Functional Requirements
 - 국토교통부 자동차등록 현황 데이터를 월 단위로 크롤링하여 MySQL DB에 저장해야 한다.
 - 현대/기아 홈페이지에서 **FAQ 데이터(브랜드, 카테고리, 질문, 답변)**를 크롤링하여 DB에 반영해야 한다.
 - 차량등록 현황 조회 기능은 년/월/시도/시군구 단위로 필터링을 지원해야 한다.
