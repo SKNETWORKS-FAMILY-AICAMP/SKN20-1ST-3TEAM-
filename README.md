@@ -2,7 +2,6 @@
 
 ## SK Networks Family AI Camp 1st Project
 
----
 
 ## 1. 팀 소개
 ---
