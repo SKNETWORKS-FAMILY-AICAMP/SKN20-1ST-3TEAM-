@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+import conn_db
+
 def main():
     """메인 애플리케이션 함수"""
 
@@ -90,19 +92,24 @@ def show_home_page():
     st.write("---") # 구분선
     st.subheader("지역별 자동차 등록 현황 대시보드")
 
-    # 표 데이터 생성
-    # columns로 열 제목, index로 행 제목을 지정합니다.
-    table_data = {
-        '1분기': [150, 200, 180],
-        '2분기': [170, 210, 190],
-        '3분기': [180, 230, 200],
-        '4분기': [210, 250, 220]
-    }
-    row_headers = ['제품 A', '제품 B', '제품 C']
-    df = pd.DataFrame(table_data, index=row_headers)
-
+    try :
+        table_data = conn_db.load_home_data()
+    except Exception as e:
+        print(e)
+        st.warning('Cannot Connected Database')
+        # 샘플 데이터
+        table_data = {
+            '1분기': [150, 200, 180],
+            '2분기': [170, 210, 190],
+            '3분기': [180, 230, 200],
+            '4분기': [210, 250, 220]
+        }
+        row_headers = ['제품 A', '제품 B', '제품 C']
+    
+    df = pd.DataFrame(table_data)
+    
     # st.dataframe을 사용하여 엑셀과 유사한 표를 표시합니다.
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, hide_index=True)
 
     st.write("---") # 구분선
 
