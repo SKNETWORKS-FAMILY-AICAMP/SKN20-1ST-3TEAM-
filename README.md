@@ -1,7 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=venom&height=150&color=gradient&text=SKN20-1st%20Project%20-%203TEAM&section=header&desc=/&descSize=20&textBg=false&fontSize=65&fontColor=FFAA28)
 
 # Team Introduction 
-**Team Name: 해야만하조?**  
+**Team Name:**  
 **Members**:  
 | 오학성 | 홍혜원 | 최소영 | 권규리 | 이승규 |
 |--------|--------|--------|--------|--------|
@@ -12,7 +12,7 @@
 
 ## 1.1. Introduction
 ### **전국 차량등록 현황 및 FAQ 확인 시스템**
-- 대한민국 국토교통부의 자동차등록 현황 데이터와 현대·기아 공식 홈페이지에서 수집한 FAQ 데이터를 기반으로, <br>
+- '대한민국 국토교통부의 자동차등록 현황 데이터'와 '현대·기아 공식 홈페이지에서 수집한 FAQ 데이터'를 기반으로, <br>
 <mark>지역별·기간별 차량 등록 추이</mark>와 <mark>브랜드별 자주 묻는 질문(FAQ)</mark>을 함께 제공하는 웹 대시보드 시스템입니다.
 
 ## 1.2. Purpose
@@ -20,7 +20,7 @@
 - 제조사별 고객 FAQ를 통합하여 FAQ 검색 편의성 제공 
 
 ## 1.3. Key Features Summary
-- 최신 데이터 반영 (2023.08 ~ 2025.08)
+- 최신 데이터 반영 (2020-08 ~ 2025-08)
 - 지역별(시도/시군구), 기간별 필터링
 - 현대·기아 FAQ 검색 (카테고리별/전체 검색)
 - Streamlit 기반 직관적 UI
@@ -32,7 +32,7 @@
 ## 2.1. Data Crawling
 ### 대한민국 국토교통 통계누리
 - 자동차등록 현황 보고
-- 월별 데이터 크롤링 (2023.08 ~ 2025.08)
+- 월별 데이터 크롤링 (2020.08 ~ 2025.08)
 ### FAQ
 - 현대·기아 공식 홈페이지
 - 브랜드별 FAQ 및 카테고리 데이터 크롤링
@@ -42,7 +42,7 @@
 - `region` TABLE: 시도, 시군구
 - `faq` TABLE: 브랜드(현대/기아), 카테고리, 질문·답변 저장
 > ### ERD
-> ![initial](https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/ERD.png)
+<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/ERD.png" width="700">
 
 ## 2.3. Backend (Python)
 - 크롤링 스크립트 실행 후 DB 적재
@@ -51,12 +51,21 @@
 - 차량등록현황 조회:  기간·지역 필터링 + 테이블/차트 시각화
 - 현대·기아 FAQ 검색:  카테고리별/전체 검색 지원
 
+<br>
+
+> ### Architecture Diagram
+<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/Architecture_Diagram.png" width="700">
+
+> ### Table Specification
+<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%ED%85%8C%EC%9D%B4%EB%B8%94%EB%AA%85%EC%84%B8%EC%84%9C1.png" width="700">
+<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%ED%85%8C%EC%9D%B4%EB%B8%94%EB%AA%85%EC%84%B8%EC%84%9C2.png" width="700">
+
 ---
 
 # 3. KEY Features
 ## 3.1. 차량등록 현황 조회
 ### 필터링 기능
-- 기간: **월별 선택 (2023.08 ~ 2025.08)**
+- 기간: **월별 선택 (2020.08 ~ 2025.08)**
 - 지역: **시도/시군구 단위 선택 가능**
 - 시각화: **차량 등록 현황을 표(Table) 및 차트(Line/Bar/Pie)로 제공**
 - 차량 종류별(승용, 승합, 화물, 특수) 및 용도별(관용, 자가용, 영업용, 계) **분포 확인 가능**
@@ -65,7 +74,7 @@
 - **브랜드별 FAQ 제공**
 - **현대(☰ Hyundai) / 기아(☰ Kia) / 전체(All) 검색 가능**
 - **카테고리 기반 필터링**
-- 검색 기능: **키워드 입력 시 해당 질문·답변 바로 확인**
+- **검색 기능: 키워드 입력 시 해당 질문·답변 바로 확인**
 
 ---
 
@@ -99,24 +108,20 @@
 
 ## 5. Results
 
-### 7.1. 메인 프로시저  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/766aaa07-b9b0-4db7-b490-09d4db31376f" />
+### 5.1. 메인 대시보드 (지역별 자동차 등록 현황 대시보드) 
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EB%A9%94%EC%9D%B8%EB%8C%80%EC%8B%9C%2C%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%ED%98%84%ED%99%A9.png" />
 
-### 7.2. 모델 별 판매 순위 프로시저  
+### 5.2.시도별 자동차 총 등록대수  
 - 기간별 모델 판매 순위 정보 제공  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/5263dc3c-70f6-4baf-84f7-cc3ccf202e17" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%8B%9C%EB%8F%84%EB%B3%84%20%EC%9E%90%EB%8F%99%EC%B0%A8%20%EC%B4%9D%20%EB%93%B1%EB%A1%9D%EB%8C%80%EC%88%98.png" />
 
-### 7.3. 브랜드 별 판매 순위 프로시저  
-- 특정 브랜드 별 판매 순위 정보 제공  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/6bb067c7-0ce3-42c5-aabc-d7ab3982b149" />
+### 5.3. 차종별 합계 및 비중 
+- 기간, 차종별 합계 비중 제공  
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%B0%A8%EC%A2%85%EB%B3%84%EB%93%B1%EB%A1%9D%EB%B9%84%EC%A4%91.png" />
 
-### 7.4. 차량 세부 정보 조회 프로시저  
-- 모델 별 세부 정보 제공  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/aecf25de-a78e-4a28-9bbd-e2ee0677a08c" />
-
-### 7.5 FAQ 프로시저  
-- 브랜드 별 빈도 높은 상위 10개 질문 정보 제공  
- <img width="1280" alt="image" src="https://github.com/user-attachments/assets/f1451a61-de1b-471a-9190-0493802edabc" />
+### 5.4. FAQ(현대/기아)  
+- 현대/기아 자동차 관련 질문과 답변 제공  
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/FAQ.png" />
 
 ---
 
