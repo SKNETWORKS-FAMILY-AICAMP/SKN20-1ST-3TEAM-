@@ -105,19 +105,19 @@
 ## 5. Results
 
 ### 7.1. 메인 대시보드 (지역별 자동차 등록 현황 대시보드) 
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/766aaa07-b9b0-4db7-b490-09d4db31376f" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EB%A9%94%EC%9D%B8%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.png" />
 
 ### 7.2.시도별 자동차 총 등록대수  
 - 기간별 모델 판매 순위 정보 제공  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/5263dc3c-70f6-4baf-84f7-cc3ccf202e17" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%8B%9C%EB%8F%84%EB%B3%84%20%EC%9E%90%EB%8F%99%EC%B0%A8%20%EC%B4%9D%20%EB%93%B1%EB%A1%9D%EB%8C%80%EC%88%98.png" />
 
 ### 7.3. 차종별 합계 및 비중 
 - 기간, 차종별 합계 비중 제공  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/6bb067c7-0ce3-42c5-aabc-d7ab3982b149" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%B0%A8%EC%A2%85%2C%EC%9A%A9%EB%8F%84%EB%B3%84%EA%B7%B8%EB%9E%98%ED%94%84.png" />
 
 ### 7.4. FAQ(현대/기아)  
 - 현대/기아 자동차 관련 질문과 답변 제공  
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/aecf25de-a78e-4a28-9bbd-e2ee0677a08c" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/FAQ.png" />
 
 ---
 
