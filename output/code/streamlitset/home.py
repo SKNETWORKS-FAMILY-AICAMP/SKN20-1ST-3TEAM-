@@ -107,14 +107,31 @@ def show_home_page():
         row_headers = ['제품 A', '제품 B', '제품 C']
     
     df = pd.DataFrame(table_data)
-    
-    # st.dataframe을 사용하여 엑셀과 유사한 표를 표시합니다.
-    st.dataframe(df, hide_index=True)
 
-    st.write("---") # 구분선
+     # st.dataframe을 사용하여 엑셀과 유사한 표를 표시합니다.
+    st.dataframe(df, hide_index=True)
+    
+    import plotly.express as px
+
+    # --- 막대 그래프 표시 (sido별 total_subtotal) ---
+    fig = px.bar(
+        df,
+        x="시도명",        # x축: sido 컬럼
+        y="총계",          # y축: total_subtotal 컬럼
+        title="시도별 자동차 총 등록대수",
+        labels={'시도명': '시/도', '총계': '총 등록대수'}
+    )
+    
+    # x축 레이블이 겹치지 않도록 각도를 조절합니다.
+    fig.update_xaxes(tickangle=45)
+    st.plotly_chart(fig, use_container_width=True)
+    st.write("---")  # 구분선
+
+
+
 
     # 5. 참조 문구
-    st.markdown('<p class="reference-text">※ 이 데이터는 예시용으로 생성된 데이터입니다.</p>', unsafe_allow_html=True)
+    #st.markdown('<p class="reference-text">※ 이 데이터는 예시용으로 생성된 데이터입니다.</p>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -122,7 +139,7 @@ def show_home_page():
 def show_data_page():
     """차종별 합계 및 비중 차트 페이지를 표시하는 함수"""
     st.title("📊 차종별/용도별 등록 비중 분석")
-    st.write("분석하고 싶은 월을 선택하면 해당 월의 차종별, 용도별 등록 비중을 파이 차트로 보여줍니다.")
+    st.write("해당 월의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
     st.write("---")
 
     # 필요한 라이브러리 import
@@ -156,7 +173,7 @@ def show_data_page():
             return
 
         available_months = month_df['report_month'].tolist()
-        selected_month = st.selectbox("🗓️ 분석할 월을 선택하세요:", options=available_months)
+        selected_month = st.selectbox("🗓️ 월을 선택하세요:", options=available_months)
 
         # --- 3. 선택된 월의 데이터 가져오기 ---
         if selected_month:
@@ -240,6 +257,9 @@ def show_info_page():
     
     st.info("현대/기아 자동차 관련 질문과 답변을 제공합니다.")
     
+    # 검색창 추가
+    search_query = st.text_input("🔎 질문 검색:", placeholder="검색어를 입력하세요...")
+    
     faq_categories = {
         '전체': ['전체'],
         '홈페이지': ['전체', '회원', '로그인', '기타'],
@@ -303,70 +323,63 @@ def show_info_page():
                 options=second_options
             )
 
-        # with 블록 밖에서 DB 쿼리 및 데이터프레임 표시
-        # SELECT 절을 수정하여 원하는 컬럼만 선택합니다.
-        query = f"SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_company = '현대' AND faq_major_category = '{first_selection}' AND faq_sub_category = '{second_selection}'"
+        # DB 쿼리 생성 (가독성 및 유지보수성을 위해 동적으로 구성)
+        query_parts = ["SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_company = '현대'"]
+        if first_selection != '전체':
+            query_parts.append(f"AND faq_major_category = '{first_selection}'")
+        if second_selection != '전체':
+            query_parts.append(f"AND faq_sub_category = '{second_selection}'")
+        if search_query:
+            query_parts.append(f"AND faq_question LIKE '%{search_query}%'")
         
-        if view_state == '현대' :
-            if not first_selection == '전체' :
-                if not second_selection == '전체' :
-                    query = f' \
-                            SELECT faq_company \
-                                , faq_question \
-                                , faq_answer \
-                            FROM faq \
-                            WHERE faq_company = "현대" \
-                            AND faq_major_category = "{first_selection}" \
-                            AND faq_sub_category = "{second_selection}" \
-                            '
-                else:
-                    query = f' \
-                            SELECT faq_company \
-                                , faq_question \
-                                , faq_answer \
-                            FROM faq \
-                            WHERE faq_company = "현대" \
-                            AND faq_major_category = "{first_selection}" \
-                            '
-            else :
-                query = '''
-                        SELECT faq_company
-                            , faq_question
-                            , faq_answer
-                        FROM faq
-                        WHERE faq_company = "현대"
-                        '''
-                
+        query = " ".join(query_parts)
+
         conn = mysql.connector.connect(**db_config)
         df = pd.read_sql(query, conn)
         st.write("---") # 구분선 추가
-        for index, row in df.iterrows():
-            faq_company = row['faq_company']
-            with st.expander(f"Q.[{faq_company}] {row['faq_question']}"):
-                st.write(row['faq_answer'])
+
+        if df.empty:
+            st.warning("검색 결과가 없습니다.")
+        else:
+            for index, row in df.iterrows():
+                faq_company = row['faq_company']
+                with st.expander(f"Q.[{faq_company}] {row['faq_question']}"):
+                    st.write(row['faq_answer'])
         
         # (선택 사항) 사용자가 최종적으로 선택한 항목을 화면에 표시합니다.
         st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
 
     elif view_state == '전체':
         # 전체 FAQ DB 조회 및 화면 표시
+        query = "SELECT faq_company, faq_question, faq_answer FROM faq"
+        if search_query:
+            query += f" WHERE faq_question LIKE '%{search_query}%'"
+            
         conn = mysql.connector.connect(**db_config)
-        sql = "SELECT faq_question, faq_answer FROM faq;"
-        df = pd.read_sql(sql, conn)
+        df = pd.read_sql(query, conn)
         st.write("---") # 구분선 추가
-        for index, row in df.iterrows():
-            with st.expander(f"Q. {row['faq_question']}"):
-                st.write(row['faq_answer'])
+        if df.empty:
+            st.warning("검색 결과가 없습니다.")
+        else:
+            for index, row in df.iterrows():
+                with st.expander(f"Q.[{row['faq_company']}] {row['faq_question']}"):
+                    st.write(row['faq_answer'])
 
     elif view_state == '기아':
         # 기아 FAQ DB 조회 및 화면 표시
+        query = "SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_company = '기아'"
+        if search_query:
+            query += f" AND faq_question LIKE '%{search_query}%'"
+
         conn = mysql.connector.connect(**db_config)
-        sql = "SELECT faq_question, faq_answer FROM faq WHERE faq_company = '기아';"
-        df = pd.read_sql(sql, conn)
+        df = pd.read_sql(query, conn)
         st.write("---") # 구분선 추가
-        for index, row in df.iterrows():
-            with st.expander(f"Q. {row['faq_question']}"):
-                st.write(row['faq_answer'])
+        if df.empty:
+            st.warning("검색 결과가 없습니다.")
+        else:
+            for index, row in df.iterrows():
+                with st.expander(f"Q.[{row['faq_company']}] {row['faq_question']}"):
+                    st.write(row['faq_answer'])
 
 # Streamlit 앱을 실행하기 위한 코드 (로컬 테스트 시 사용)
 # if __name__ == "__main__":
