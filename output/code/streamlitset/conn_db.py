@@ -71,3 +71,36 @@ def load_date_data() :
                 return df
     except Exception as e:
         print(e)
+
+def load_detail_data(sel_month) :
+    try :
+        with get_connection() as conn :
+            print("Connected")
+            with conn.cursor() as cur :
+                sel_month = f'{sel_month}%'
+                query = '''
+                        SELECT passenger_official
+                            , passenger_private
+                            , passenger_commercial
+                            , van_official
+                            , van_private
+                            , van_commercial
+                            , truck_official
+                            , truck_private
+                            , truck_commercial
+                            , special_official
+                            , special_private
+                            , special_commercial
+                        FROM car_registeration
+                        WHERE report_month LIKE %s;
+                        '''
+                cur.execute(query, (sel_month))
+                results = cur.fetchall()
+
+                df = pd.DataFrame(results)
+
+                print(df)
+
+                return df
+    except Exception as e:
+        print(e)
