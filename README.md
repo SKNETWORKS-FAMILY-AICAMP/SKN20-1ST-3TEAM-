@@ -42,7 +42,7 @@
 - `region` TABLE: 시도, 시군구
 - `faq` TABLE: 브랜드(현대/기아), 카테고리, 질문·답변 저장
 > ### ERD
-<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/ERD.png?raw=true" width="700">
+<img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/ERD.png" width="700">
 
 ## 2.3. Backend (Python)
 - 크롤링 스크립트 실행 후 DB 적재
@@ -54,7 +54,7 @@
 <br>
 
 > ### Architecture Diagram
-> <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/Architecture_Diagram.png" width="500">
+> <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/Architecture_Diagram.png" width="500">
 
 ---
 
