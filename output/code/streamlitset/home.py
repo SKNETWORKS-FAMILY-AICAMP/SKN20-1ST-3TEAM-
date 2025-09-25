@@ -1,8 +1,13 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
+import mysql.connector
+from dotenv import load_dotenv
 import conn_db
+import os
+import plotly.express as px
+
+load_dotenv()
 
 def main():
     """메인 애플리케이션 함수"""
@@ -127,14 +132,12 @@ def show_home_page():
     st.plotly_chart(fig, use_container_width=True)
     st.write("---")  # 구분선
 
-
-
-
     # 5. 참조 문구
     #st.markdown('<p class="reference-text">※ 이 데이터는 예시용으로 생성된 데이터입니다.</p>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
+#====================================================================================================================1페이지
 
 def show_data_page():
     """차종별 합계 및 비중 차트 페이지를 표시하는 함수"""
@@ -142,14 +145,6 @@ def show_data_page():
     st.write("해당 월의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
     st.write("---")
 
-    # 필요한 라이브러리 import
-    import plotly.express as px
-    import mysql.connector
-    from dotenv import load_dotenv
-    import os
-
-    # --- 1. DB 연결 설정 ---
-    load_dotenv()
     db_config = {
         'host': os.getenv("DB_HOST"),
         'user': os.getenv("DB_USER"),
@@ -248,8 +243,7 @@ def show_data_page():
             conn.close()
 
 
-#______________________________________________________
-
+#=============================================================================================================2페이지
 
 def show_info_page():
     """FAQ(현대/기아) 페이지를 표시하는 함수"""
@@ -380,11 +374,6 @@ def show_info_page():
             for index, row in df.iterrows():
                 with st.expander(f"Q.[{row['faq_company']}] {row['faq_question']}"):
                     st.write(row['faq_answer'])
-
-# Streamlit 앱을 실행하기 위한 코드 (로컬 테스트 시 사용)
-# if __name__ == "__main__":
-#     show_info_page()
-
 
 
 if __name__ == "__main__":
