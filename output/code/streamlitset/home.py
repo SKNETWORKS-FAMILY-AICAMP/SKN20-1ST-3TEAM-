@@ -81,7 +81,6 @@ def show_home_page():
 
     # 1. 제목
     st.header("🚗2년간 자동차 등록 현황 분석🚗")
-    
 
     # 2. 부제목
     st.subheader("자동차등록현황보고(Total Registered Motor Vehicles) ")
@@ -98,14 +97,13 @@ def show_home_page():
     st.subheader("지역별 자동차 등록 현황 대시보드")
     try :
         month_data = conn_db.load_date_data()
-        print(month_data['report_month'].tolist())
+        # print(month_data['report_month'].tolist())
         show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        sel_month = st.selectbox("월 선택", show_date)
+        sel_month = st.selectbox("🗓️ 월을 선택하세요:", show_date)
         # st.write(sel_month)
     except Exception as e:
         print(e)
         
-
     try :
         table_data = conn_db.load_home_data(sel_month)
     except Exception as e:
@@ -125,8 +123,6 @@ def show_home_page():
      # st.dataframe을 사용하여 엑셀과 유사한 표를 표시합니다.
     st.dataframe(df, hide_index=True)
     
-    import plotly.express as px
-
     # --- 막대 그래프 표시 (sido별 total_subtotal) ---
     fig = px.bar(
         df,
@@ -141,9 +137,6 @@ def show_home_page():
     st.plotly_chart(fig, use_container_width=True)
     st.write("---")  # 구분선
 
-    # 5. 참조 문구
-    #st.markdown('<p class="reference-text">※ 이 데이터는 예시용으로 생성된 데이터입니다.</p>', unsafe_allow_html=True)
-
     st.markdown('</div>', unsafe_allow_html=True)
 
 #====================================================================================================================1페이지
@@ -154,52 +147,31 @@ def show_data_page():
     st.write("해당 월의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
     st.write("---")
 
-    db_config = {
-        'host': os.getenv("DB_HOST"),
-        'user': os.getenv("DB_USER"),
-        'password': os.getenv("DB_PASSWORD"),
-        'database': 'sknfirst'
-    }
-
     # DB 연결 및 데이터 조회를 위한 try-except-finally 블록
-    conn = None
     try:
-        conn = mysql.connector.connect(**db_config)
 
         # --- 2. 월 선택 UI 생성 ---
         # DB에서 선택 가능한 'report_month' 목록을 가져옵니다.
-        # ※ 아래 쿼리의 'car_registrations' 부분은 실제 테이블 이름으로 변경해야 합니다.
-        query_months = "SELECT DISTINCT report_month FROM car_registeration ORDER BY report_month DESC"
-        month_df = pd.read_sql(query_months, conn)
+        month_data = conn_db.load_date_data()
 
-        if month_df.empty:
+        if month_data.empty :
             st.warning("데이터베이스에서 조회할 수 있는 월 정보가 없습니다.")
             return
 
-        available_months = month_df['report_month'].tolist()
+        available_months = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
         selected_month = st.selectbox("🗓️ 월을 선택하세요:", options=available_months)
 
         # --- 3. 선택된 월의 데이터 가져오기 ---
         if selected_month:
             # 사용자가 선택한 월에 해당하는 데이터를 DB에서 조회합니다.
-            # ※ 아래 쿼리의 'car_registrations' 부분은 실제 테이블 이름으로 변경해야 합니다.
-            query_data = f"""
-                SELECT
-                    passenger_official, passenger_private, passenger_commercial,
-                    van_official, van_private, van_commercial,
-                    truck_official, truck_private, truck_commercial,
-                    special_official, special_private, special_commercial
-                FROM car_registeration
-                WHERE report_month = '{selected_month}'
-            """
-            data_df = pd.read_sql(query_data, conn)
+            detail_data = conn_db.load_detail_data(selected_month)
 
-            if data_df.empty:
+            if detail_data.empty:
                 st.warning(f"'{selected_month}'에 대한 데이터가 없습니다.")
                 return
 
             # 조회된 데이터의 첫 번째 행을 사용합니다.
-            vehicle_data = data_df.iloc[0]
+            vehicle_data = detail_data.iloc[0]
 
             # --- 4. 파이 차트 생성 및 표시 ---
             st.subheader(f"'{selected_month}' 차종별 용도 비중")
@@ -246,11 +218,6 @@ def show_data_page():
     except mysql.connector.Error as err:
         st.error(f"데이터베이스 연결에 실패했습니다: {err}")
         st.info("`.env` 파일의 DB 연결 정보를 확인하거나 MySQL 서버가 실행 중인지 확인해주세요.")
-    finally:
-        # --- 5. DB 연결 종료 ---
-        if conn and conn.is_connected():
-            conn.close()
-
 
 #=============================================================================================================2페이지
 
