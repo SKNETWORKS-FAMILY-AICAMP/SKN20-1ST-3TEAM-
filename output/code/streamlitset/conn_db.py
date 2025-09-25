@@ -49,6 +49,37 @@ def load_home_data(sel_month) :
     except Exception as e:
         print(e)
 
+def load_home_data_by_sido(sel_month, sel_sido) :
+    try :
+        with get_connection() as conn :
+            print("Connected")
+            with conn.cursor() as cur :
+                sel_month = f'{sel_month}%'
+                query = '''
+                        SELECT r.sigungu AS sigungu
+                            , c.passenger_subtotal
+                            , c.van_subtotal
+                            , c.truck_subtotal
+                            , c.special_subtotal
+                            , c.total_subtotal
+                        FROM car_registeration c
+                        JOIN region r
+                        ON c.region_id = r.region_id
+                        WHERE c.report_month LIKE %s
+                        AND r.sido LIKE %s;
+                        '''
+                cur.execute(query, (sel_month, sel_sido))
+                results = cur.fetchall()
+
+                df = pd.DataFrame(results)
+                df.columns = ['시군구명', '승용', '승합', '화물', '특수', '총계']
+
+                # print(df)
+
+                return df
+    except Exception as e:
+        print(e)
+
 def load_date_data() :
     try :
         with get_connection() as conn :

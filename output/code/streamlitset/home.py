@@ -1,13 +1,8 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import mysql.connector
-from dotenv import load_dotenv
-import conn_db
-import os
 import plotly.express as px
 
-load_dotenv()
+import conn_db
 
 def main():
     """메인 애플리케이션 함수"""
@@ -80,10 +75,10 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("🚗2년간 자동차 등록 현황 분석🚗")
+    st.header("🚗2년간 차량 등록 현황 분석🚗")
 
     # 2. 부제목
-    st.subheader("자동차등록현황보고(Total Registered Motor Vehicles) ")
+    st.subheader("차량 등록 현황 보고(Total Registered Motor Vehicles) ")
 
     # 3. 자료 출처
     st.markdown("""
@@ -94,18 +89,24 @@ def show_home_page():
 
     # 4. 대시보드 (수정된 부분: 막대 차트 -> 표)
     st.write("---") # 구분선
-    st.subheader("지역별 자동차 등록 현황 대시보드")
+    st.subheader("지역별 차량 등록 현황 대시보드")
     try :
         month_data = conn_db.load_date_data()
         # print(month_data['report_month'].tolist())
         show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        sel_month = st.selectbox("🗓️ 월을 선택하세요:", show_date)
+        sido_list = ['전체', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '충북', '충남', '전남', '경북', '경남', '제주', '강원', '전북']
+
+        sel_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요:", show_date)
+        sel_sido = st.selectbox("시도명을 선택하세요:", sido_list)
         # st.write(sel_month)
     except Exception as e:
         print(e)
         
     try :
-        table_data = conn_db.load_home_data(sel_month)
+        if sel_sido == "전체" :
+            table_data = conn_db.load_home_data(sel_month)
+        else :
+            table_data = conn_db.load_home_data_by_sido(sel_month, sel_sido)
     except Exception as e:
         print(e)
         st.warning('Cannot Connected Database')
@@ -131,9 +132,9 @@ def show_home_page():
     # --- 막대 그래프 표시 (sido별 total_subtotal) ---
     fig = px.bar(
         df,
-        x="시도명",        # x축: sido 컬럼
+        x=df.columns[0],        # x축: sido 컬럼
         y="총계",          # y축: total_subtotal 컬럼
-        title="시도별 자동차 총 등록대수",
+        title="시도별 차량 총 등록대수",
         labels={'시도명': '시/도', '총계': '총 등록대수'}
     )
     
