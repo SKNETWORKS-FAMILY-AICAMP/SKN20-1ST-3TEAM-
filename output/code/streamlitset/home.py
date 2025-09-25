@@ -94,10 +94,7 @@ def show_home_page():
         month_data = conn_db.load_date_data()
         # print(month_data['report_month'].tolist())
         show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        sido_list = ['전체', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '충북', '충남', '전남', '경북', '경남', '제주', '강원', '전북']
-
-        sel_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요:", show_date)
-        sel_sido = st.selectbox("시도명을 선택하세요:", sido_list)
+        sel_month = st.selectbox("🗓️ 월을 선택하세요:", show_date)
         # st.write(sel_month)
     except Exception as e:
         print(e)
@@ -148,9 +145,9 @@ def show_home_page():
 #====================================================================================================================1페이지
 
 def show_data_page():
-    """차종별 합계 및 비중 차트 페이지를 표시하는 함수"""
-    st.title("📊 차종별/용도별 등록 비중 분석")
-    st.write("해당 월의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
+    """차종 용도별 합계 및 비중 차트 페이지를 표시하는 함수"""
+    st.title("📊 차종 용도별 비중 분석")
+    st.write("원하시는 기간의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
     st.write("---")
 
     # DB 연결 및 데이터 조회를 위한 try-except-finally 블록
@@ -165,7 +162,7 @@ def show_data_page():
             return
 
         available_months = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        selected_month = st.selectbox("🗓️ 월을 선택하세요:", options=available_months)
+        selected_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요(2020.08~2025.08):", options=available_months)
 
         # --- 3. 선택된 월의 데이터 가져오기 ---
         if selected_month:

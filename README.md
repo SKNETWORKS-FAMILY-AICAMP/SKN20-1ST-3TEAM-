@@ -1,7 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=venom&height=150&color=gradient&text=SKN20-1st%20Project%20-%203TEAM&section=header&desc=/&descSize=20&textBg=false&fontSize=65&fontColor=FFAA28)
 
 # Team Introduction 
-**Team Name:**  
+**Team Name: 해야만하조?**  
 **Members**:  
 | 오학성 | 홍혜원 | 최소영 | 권규리 | 이승규 |
 |--------|--------|--------|--------|--------|
@@ -112,7 +112,7 @@
 <img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EB%A9%94%EC%9D%B8%EB%8C%80%EC%8B%9C%2C%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%ED%98%84%ED%99%A9.png" />
 
 ### 5.2.시도별 자동차 총 등록대수  
-- 기간별 모델 판매 순위 정보 제공  
+- 기간, 시도별 자동차 등록 정보 제공  
 <img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%8B%9C%EB%8F%84%EB%B3%84%20%EC%9E%90%EB%8F%99%EC%B0%A8%20%EC%B4%9D%20%EB%93%B1%EB%A1%9D%EB%8C%80%EC%88%98.png" />
 
 ### 5.3. 차종별 합계 및 비중 
