@@ -119,7 +119,7 @@ try:
     print("DB삽입 완료")
 
 except Exception as e:
-    print(e})
+    print(e)
     if conn:
         conn.rollback() 
 
