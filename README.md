@@ -1,7 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=venom&height=150&color=gradient&text=SKN20-1st%20Project%20-%203TEAM&section=header&desc=/&descSize=20&textBg=false&fontSize=65&fontColor=FFAA28)
 
 # Team Introduction 
-**Team Name:**  
+**Team Name: 해야만하조?**  
 **Members**:  
 | 오학성 | 홍혜원 | 최소영 | 권규리 | 이승규 |
 |--------|--------|--------|--------|--------|
