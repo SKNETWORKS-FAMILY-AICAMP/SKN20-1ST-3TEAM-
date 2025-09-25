@@ -111,17 +111,22 @@ def show_home_page():
         st.warning('Cannot Connected Database')
         # 샘플 데이터
         table_data = {
-            '1분기': [150, 200, 180],
-            '2분기': [170, 210, 190],
-            '3분기': [180, 230, 200],
-            '4분기': [210, 250, 220]
+            '1분기': [150000, 200000, 180000],
+            '2분기': [170000, 210000, 190000],
+            '3분기': [180000, 230000, 200000],
+            '4분기': [210000, 250000, 220000]
         }
         row_headers = ['제품 A', '제품 B', '제품 C']
     
     df = pd.DataFrame(table_data)
 
-     # st.dataframe을 사용하여 엑셀과 유사한 표를 표시합니다.
-    st.dataframe(df, hide_index=True)
+    # --- 서식 적용 부분 ---
+    # 숫자 컬럼에 천 단위 콤마 서식을 적용합니다.
+    numeric_cols = ['승용', '승합', '화물', '특수', '총계']
+    cols_to_format = {col: '{:,}' for col in numeric_cols if col in df.columns}
+    
+    # st.dataframe을 사용하여 서식이 적용된 표를 표시합니다.
+    st.dataframe(df.style.format(cols_to_format), hide_index=True)
     
     # --- 막대 그래프 표시 (sido별 total_subtotal) ---
     fig = px.bar(
