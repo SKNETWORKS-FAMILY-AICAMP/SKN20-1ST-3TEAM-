@@ -9,7 +9,7 @@ def main():
 
     # --- 페이지 기본 설정 ---
     st.set_page_config(
-        page_title="2년간 자동차 등록 현황 분석",
+        page_title="5개년 차량등록 현황 분석",
         page_icon="🚗",
         layout="wide"
     )
@@ -45,18 +45,18 @@ def main():
 
     # --- 사이드바 (왼쪽 메뉴) ---
     with st.sidebar:
-        st.header("📌메뉴")
+        st.header("📌 메뉴")
 
         # st.session_state를 사용하여 현재 페이지를 추적합니다.
         if 'page' not in st.session_state:
             st.session_state.page = 'home' # 초기 페이지 설정
 
         # 각 버튼을 누르면 session_state의 값을 변경합니다.
-        if st.button("🏠홈", use_container_width=True):
+        if st.button("🏠 홈", use_container_width=True):
             st.session_state.page = 'home'
-        if st.button("📊차종별 합계 및 비중", use_container_width=True):
+        if st.button("📊 차종별 용도 비중", use_container_width=True):
             st.session_state.page = 'data'
-        if st.button("❓FAQ(현대/기아)", use_container_width=True):
+        if st.button("❓ FAQ(현대/기아)", use_container_width=True):
             st.session_state.page = 'info'
 
     # --- 메인 창 (오른쪽 콘텐츠) ---
@@ -75,10 +75,10 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("🚗5개년 차량 등록 현황 분석🚗")
+    st.header("🚗 5개년 차량등록 현황 🚗")
 
     # 2. 부제목
-    st.subheader("차량 등록 현황 보고(Total Registered Motor Vehicles) ")
+    st.subheader("차량등록 현황 보고(Total Registered Motor Vehicles) ")
 
     # 3. 자료 출처
     st.markdown("""
@@ -89,14 +89,14 @@ def show_home_page():
 
     # 4. 대시보드 (수정된 부분: 막대 차트 -> 표)
     st.write("---") # 구분선
-    st.subheader("지역별 차량 등록 현황 대시보드")
+    st.subheader("지역별 차량등록 현황")
     try :
         month_data = conn_db.load_date_data()
         # print(month_data['report_month'].tolist())
         show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        sel_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요(2020.08 ~ 2025.08):", show_date)
+        sel_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요(2020-08 ~ 2025-08):", show_date)
         region_data = ['전체', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '충북', '충남', '전남', '경북', '경남', '제주', '강원', '전북']
-        sel_sido = st.selectbox("시도명을 선택하세요:", region_data)
+        sel_sido = st.selectbox("시/도명을 선택하세요:", region_data)
         # st.write(sel_month)
     except Exception as e:
         print(e)
@@ -148,8 +148,8 @@ def show_home_page():
 
 def show_data_page():
     """차종 용도별 합계 및 비중 차트 페이지를 표시하는 함수"""
-    st.title("📊 차종 용도별 비중 분석")
-    st.write("원하시는 기간의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
+    st.title("📊 차종별 용도 비중")
+    st.write("원하시는 기간의 차종별 용도 비중을 확인할 수 있습니다.")
     st.write("---")
 
     # DB 연결 및 데이터 조회를 위한 try-except-finally 블록
@@ -164,7 +164,7 @@ def show_data_page():
             return
 
         available_months = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        selected_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요(2020.08~2025.08):", options=available_months)
+        selected_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요(2020-08 ~ 2025-08):", options=available_months)
 
         # --- 3. 선택된 월의 데이터 가져오기 ---
         if selected_month:
