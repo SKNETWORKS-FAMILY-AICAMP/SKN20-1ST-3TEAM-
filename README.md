@@ -109,23 +109,22 @@
 ## 5. Results
 
 ### 5.1. 메인 - 전체 지역 차량 등록 현황 
-<img width="1280" alt="image" src="" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/main_1.png" />
 
 ### 5.2. 메인 - 시/도별 챠랑 등록 현황
-<img width="1280" alt="image" src="" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/main_2.png" />
 
-### 5.2. 메인 - 시/도별 자동차 총 등록대수
-<img width="1280" alt="image" src="" />
+### 5.3. 메인 - 시/도별 자동차 총 등록대수
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/main_3.png" />
 
-### 5.3. 차종별 용도 비중 
-<img width="1280" alt="image" src="" />
-<img width="1280" alt="image" src="" />
+### 5.4. 차종별 용도 비중 
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/ratio_1.png" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/ratio_2.png" />
 
-### 5.4. FAQ  
-- 현대/기아 자동차 관련 질문과 답변 제공  
-<img width="1280" alt="image" src="" />
-<img width="1280" alt="image" src="" />
-<img width="1280" alt="image" src="" />
+### 5.5. FAQ  
+ <img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/faq_1.png" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/faq_2.png" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/dashboard/faq_3.png" />
 
 
 ---
