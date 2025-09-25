@@ -91,9 +91,18 @@ def show_home_page():
     # 4. 대시보드 (수정된 부분: 막대 차트 -> 표)
     st.write("---") # 구분선
     st.subheader("지역별 자동차 등록 현황 대시보드")
+    try :
+        month_data = conn_db.load_date_data()
+        print(month_data['report_month'].tolist())
+        show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
+        sel_month = st.selectbox("월 선택", show_date)
+        # st.write(sel_month)
+    except Exception as e:
+        print(e)
+        
 
     try :
-        table_data = conn_db.load_home_data()
+        table_data = conn_db.load_home_data(sel_month)
     except Exception as e:
         print(e)
         st.warning('Cannot Connected Database')
@@ -126,9 +135,6 @@ def show_home_page():
     fig.update_xaxes(tickangle=45)
     st.plotly_chart(fig, use_container_width=True)
     st.write("---")  # 구분선
-
-
-
 
     # 5. 참조 문구
     #st.markdown('<p class="reference-text">※ 이 데이터는 예시용으로 생성된 데이터입니다.</p>', unsafe_allow_html=True)
