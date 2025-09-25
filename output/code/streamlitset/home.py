@@ -75,7 +75,7 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("🚗2년간 차량 등록 현황 분석🚗")
+    st.header("🚗5개년 차량 등록 현황 분석🚗")
 
     # 2. 부제목
     st.subheader("차량 등록 현황 보고(Total Registered Motor Vehicles) ")
