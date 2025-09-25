@@ -104,3 +104,47 @@ def load_detail_data(sel_month) :
                 return df
     except Exception as e:
         print(e)
+
+def load_faq_data(view_state='전체', first_selection='전체', second_selection='전체', search_query='') :
+    try :
+        with get_connection() as conn :
+            print("Connected")
+            with conn.cursor() as cur :
+                query_list = []
+                condition_list = []
+                default_query = '''
+                        SELECT faq_company, faq_question, faq_answer 
+                        FROM faq
+                        '''
+                query_list.append(default_query)
+
+                if view_state != '전체' :
+                    query_com = "WHERE faq_company = %s"
+                    query_list.append(query_com)
+                    condition_list.append(view_state)
+                if first_selection != '전체' :
+                    query_1 = "AND faq_major_category = %s"
+                    query_list.append(query_1)
+                    condition_list.append(first_selection)
+                if second_selection != '전체' :
+                    query_2 = "AND faq_sub_category = %s"
+                    query_list.append(query_2)
+                    condition_list.append(second_selection)
+                if search_query != '':
+                    search_query = f'%{search_query}%'
+                    query_search = "AND faq_question LIKE %s"
+                    query_list.append(query_search)
+                    condition_list.append(search_query)
+
+                query = " ".join(query_list)
+                cur.execute(query, tuple(condition_list))
+
+                results = cur.fetchall()
+
+                df = pd.DataFrame(results)
+
+                print(df)
+
+                return df
+    except Exception as e:
+        print(e)

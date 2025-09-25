@@ -14,7 +14,7 @@ def main():
 
     # --- 페이지 기본 설정 ---
     st.set_page_config(
-        page_title="5개년 자동차 등록 현황 분석",
+        page_title="2년간 자동차 등록 현황 분석",
         page_icon="🚗",
         layout="wide"
     )
@@ -80,7 +80,7 @@ def show_home_page():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
     # 1. 제목
-    st.header("🚗5개년 자동차 등록 현황 분석🚗")
+    st.header("🚗2년간 자동차 등록 현황 분석🚗")
 
     # 2. 부제목
     st.subheader("자동차등록현황보고(Total Registered Motor Vehicles) ")
@@ -99,7 +99,7 @@ def show_home_page():
         month_data = conn_db.load_date_data()
         # print(month_data['report_month'].tolist())
         show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        sel_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요 (2020-08 ~ 2025 -08):", show_date)
+        sel_month = st.selectbox("🗓️ 월을 선택하세요:", show_date)
         # st.write(sel_month)
     except Exception as e:
         print(e)
@@ -111,10 +111,10 @@ def show_home_page():
         st.warning('Cannot Connected Database')
         # 샘플 데이터
         table_data = {
-            '1분기': [150000, 200000, 180000],
-            '2분기': [170000, 210000, 190000],
-            '3분기': [180000, 230000, 200000],
-            '4분기': [210000, 250000, 220000]
+            '1분기': [150, 200, 180],
+            '2분기': [170, 210, 190],
+            '3분기': [180, 230, 200],
+            '4분기': [210, 250, 220]
         }
         row_headers = ['제품 A', '제품 B', '제품 C']
     
@@ -127,7 +127,7 @@ def show_home_page():
     
     # st.dataframe을 사용하여 서식이 적용된 표를 표시합니다.
     st.dataframe(df.style.format(cols_to_format), hide_index=True)
-    
+
     # --- 막대 그래프 표시 (sido별 total_subtotal) ---
     fig = px.bar(
         df,
@@ -148,8 +148,8 @@ def show_home_page():
 
 def show_data_page():
     """차종별 합계 및 비중 차트 페이지를 표시하는 함수"""
-    st.title("📊 차종별 등록 비중 분석")
-    st.write("원하시는 기간의 차종별 등록 비중을 확인할 수 있습니다.")
+    st.title("📊 차종별/용도별 등록 비중 분석")
+    st.write("해당 월의 차종별, 용도별 등록 비중을 확인할 수 있습니다.")
     st.write("---")
 
     # DB 연결 및 데이터 조회를 위한 try-except-finally 블록
@@ -164,7 +164,7 @@ def show_data_page():
             return
 
         available_months = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        selected_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요 (2020-08 ~ 2025 -08):", options=available_months)
+        selected_month = st.selectbox("🗓️ 월을 선택하세요:", options=available_months)
 
         # --- 3. 선택된 월의 데이터 가져오기 ---
         if selected_month:
@@ -220,20 +220,63 @@ def show_data_page():
                 fig_special = create_pie_chart(vehicle_data, "특수차", ['special_official', 'special_private', 'special_commercial'])
                 st.plotly_chart(fig_special, use_container_width=True)
 
-    except mysql.connector.Error as err:
+    except Exception as err:
         st.error(f"데이터베이스 연결에 실패했습니다: {err}")
         st.info("`.env` 파일의 DB 연결 정보를 확인하거나 MySQL 서버가 실행 중인지 확인해주세요.")
 
 #=============================================================================================================2페이지
 
+
+
 def show_info_page():
     """FAQ(현대/기아) 페이지를 표시하는 함수"""
+    # 버튼 누르면 초기화 할 수 있도록 session 추가
+    if 'disabled_state' not in st.session_state :
+        st.session_state.disabled_state = True
+
+        st.session_state.index_1 = 0
+        st.session_state.index_2 = 0
+        st.session_state.sb1_key = 0
+        st.session_state.sb2_key = 0
+
+        st.session_state.text_input_value = ""
+
+    def aset_session() :
+        st.session_state.disabled_state = True
+
+        st.session_state.index_1 = 0
+        st.session_state.index_2 = 0
+        st.session_state.sb1_key += 1
+        st.session_state.sb2_key += 1
+
+        st.session_state.text_input_value = ""
+
+    def hset_session() :
+        st.session_state.disabled_state = False
+
+        st.session_state.index_1 = 0
+        st.session_state.index_2 = 0
+        st.session_state.sb1_key += 1
+        st.session_state.sb2_key += 1
+
+        st.session_state.text_input_value = ""
+
+    def kset_session() :
+        st.session_state.disabled_state = True
+
+        st.session_state.index_1 = 0
+        st.session_state.index_2 = 0
+        st.session_state.sb1_key += 1
+        st.session_state.sb2_key += 1
+
+        st.session_state.text_input_value = ""
+
     st.title("FAQ")
     
     st.info("현대/기아 자동차 관련 질문과 답변을 제공합니다.")
     
     # 검색창 추가
-    search_query = st.text_input("🔎 질문 검색:", placeholder="검색어를 입력하세요...")
+    search_query = st.text_input("🔎 질문 검색:", placeholder="검색어를 입력하세요...", key="text_input_value")
     
     faq_categories = {
         '전체': ['전체'],
@@ -252,65 +295,48 @@ def show_info_page():
     # 각 컬럼에 버튼을 추가합니다.
     # 버튼 클릭 상태를 session_state에 저장하여 페이지가 새로고침 되어도 유지되도록 합니다.
     with col1:
-        if st.button('전체', use_container_width=True):
+        if st.button('전체', use_container_width=True, on_click=aset_session):
             st.session_state.view = '전체'
 
     with col2:
-        if st.button('현대', use_container_width=True):
+        if st.button('현대', use_container_width=True, on_click=hset_session):
             st.session_state.view = '현대'
 
     with col3:
-        if st.button('기아', use_container_width=True):
+        if st.button('기아', use_container_width=True, on_click=kset_session):
             st.session_state.view = '기아'
+            
+    # 2개의 셀렉트 박스를 가로로 배치하기 위해 컬럼을 생성합니다.
+    select_col1, select_col2 = st.columns(2)
 
-    # DB 연결 정보
-    import mysql.connector
-    from dotenv import load_dotenv
-    import os
+    with select_col1:
+        # 첫 번째 셀렉트 박스를 생성합니다. (옵션은 딕셔너리의 키 값들)
+        first_options = list(faq_categories.keys())
+        first_selection = st.selectbox(
+            label="대분류",
+            options=first_options,
+            index=st.session_state.index_1,
+            disabled=st.session_state.disabled_state,
+            key=f'sb1_{st.session_state.sb1_key}'
+        )
 
-    load_dotenv()
-    db_config = {
-        'host': os.getenv("DB_HOST"), 'user': os.getenv("DB_USER"),
-        'password': os.getenv("DB_PASSWORD"), 'database': 'sknfirst'
-    }
+    with select_col2:
+        # 첫 번째 선택에 따라 두 번째 셀렉트 박스의 옵션을 동적으로 결정합니다.
+        second_options = faq_categories[first_selection]
+        second_selection = st.selectbox(
+            label="소분류",
+            options=second_options,
+            index=st.session_state.index_2,
+            disabled=st.session_state.disabled_state,
+            key=f'sb2_{st.session_state.sb1_key}'
+        )
 
     # st.session_state의 'view' 값에 따라 다른 내용을 표시합니다.
     # .get()을 사용하여 초기 실행 시 오류가 발생하는 것을 방지합니다.
     view_state = st.session_state.get('view')
 
     if view_state == '현대':
-        # 2개의 셀렉트 박스를 가로로 배치하기 위해 컬럼을 생성합니다.
-        select_col1, select_col2 = st.columns(2)
-
-        with select_col1:
-            # 첫 번째 셀렉트 박스를 생성합니다. (옵션은 딕셔너리의 키 값들)
-            first_options = list(faq_categories.keys())
-            first_selection = st.selectbox(
-                label="대분류",
-                options=first_options
-            )
-
-        with select_col2:
-            # 첫 번째 선택에 따라 두 번째 셀렉트 박스의 옵션을 동적으로 결정합니다.
-            second_options = faq_categories[first_selection]
-            second_selection = st.selectbox(
-                label="소분류",
-                options=second_options
-            )
-
-        # DB 쿼리 생성 (가독성 및 유지보수성을 위해 동적으로 구성)
-        query_parts = ["SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_company = '현대'"]
-        if first_selection != '전체':
-            query_parts.append(f"AND faq_major_category = '{first_selection}'")
-        if second_selection != '전체':
-            query_parts.append(f"AND faq_sub_category = '{second_selection}'")
-        if search_query:
-            query_parts.append(f"AND faq_question LIKE '%{search_query}%'")
-        
-        query = " ".join(query_parts)
-
-        conn = mysql.connector.connect(**db_config)
-        df = pd.read_sql(query, conn)
+        df = conn_db.load_faq_data(view_state, first_selection, second_selection, search_query)
         st.write("---") # 구분선 추가
 
         if df.empty:
@@ -325,13 +351,7 @@ def show_info_page():
         st.write(f"**선택된 카테고리:** {first_selection} > {second_selection}")
 
     elif view_state == '전체':
-        # 전체 FAQ DB 조회 및 화면 표시
-        query = "SELECT faq_company, faq_question, faq_answer FROM faq"
-        if search_query:
-            query += f" WHERE faq_question LIKE '%{search_query}%'"
-            
-        conn = mysql.connector.connect(**db_config)
-        df = pd.read_sql(query, conn)
+        df = conn_db.load_faq_data(view_state, first_selection, second_selection, search_query)
         st.write("---") # 구분선 추가
         if df.empty:
             st.warning("검색 결과가 없습니다.")
@@ -341,13 +361,7 @@ def show_info_page():
                     st.write(row['faq_answer'])
 
     elif view_state == '기아':
-        # 기아 FAQ DB 조회 및 화면 표시
-        query = "SELECT faq_company, faq_question, faq_answer FROM faq WHERE faq_company = '기아'"
-        if search_query:
-            query += f" AND faq_question LIKE '%{search_query}%'"
-
-        conn = mysql.connector.connect(**db_config)
-        df = pd.read_sql(query, conn)
+        df = conn_db.load_faq_data(view_state, first_selection, second_selection, search_query)
         st.write("---") # 구분선 추가
         if df.empty:
             st.warning("검색 결과가 없습니다.")
