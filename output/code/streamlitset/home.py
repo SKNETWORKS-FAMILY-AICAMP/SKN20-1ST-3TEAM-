@@ -94,7 +94,9 @@ def show_home_page():
         month_data = conn_db.load_date_data()
         # print(month_data['report_month'].tolist())
         show_date = month_data['report_month'].apply(lambda x : x.strftime('%Y-%m'))
-        sel_month = st.selectbox("🗓️ 월을 선택하세요:", show_date)
+        sel_month = st.selectbox("🗓️ 원하시는 기간을 선택하세요(2020.08 ~ 2025.08):", show_date)
+        region_data = ['전체', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '충북', '충남', '전남', '경북', '경남', '제주', '강원', '전북']
+        sel_sido = st.selectbox("시도명을 선택하세요:", region_data)
         # st.write(sel_month)
     except Exception as e:
         print(e)
