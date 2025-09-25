@@ -108,27 +108,33 @@
 
 ## 5. Results
 
-### 5.1. 메인 대시보드 (지역별 자동차 등록 현황 대시보드) 
-<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EB%A9%94%EC%9D%B8%EB%8C%80%EC%8B%9C%2C%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%ED%98%84%ED%99%A9.png" />
+### 5.1. 메인 - 전체 지역 차량 등록 현황 
+<img width="1280" alt="image" src="" />
 
-### 5.2.시도별 자동차 총 등록대수  
-- 기간, 시도별 자동차 등록 정보 제공  
-<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%8B%9C%EB%8F%84%EB%B3%84%20%EC%9E%90%EB%8F%99%EC%B0%A8%20%EC%B4%9D%20%EB%93%B1%EB%A1%9D%EB%8C%80%EC%88%98.png" />
+### 5.2. 메인 - 시/도별 챠랑 등록 현황
+<img width="1280" alt="image" src="" />
 
-### 5.3. 차종별 합계 및 비중 
-- 기간, 차종별 합계 비중 제공  
-<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%B0%A8%EC%A2%85%EB%B3%84%EB%93%B1%EB%A1%9D%EB%B9%84%EC%A4%91.png" />
+### 5.2. 메인 - 시/도별 자동차 총 등록대수
+<img width="1280" alt="image" src="" />
 
-### 5.4. FAQ(현대/기아)  
+### 5.3. 차종별 용도 비중 
+<img width="1280" alt="image" src="" />
+<img width="1280" alt="image" src="" />
+
+### 5.4. FAQ  
 - 현대/기아 자동차 관련 질문과 답변 제공  
-<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/FAQ.png" />
+<img width="1280" alt="image" src="" />
+<img width="1280" alt="image" src="" />
+<img width="1280" alt="image" src="" />
+
 
 ---
 
 ## 6. Retrospective
 
-- **오학성** : 
+- **오학성** : 비전공자 팀원들과의 협업을 통하여 코드를 이해하기 쉽개 개선하는 작업이 중요하다는 것을 배웠습니다. 앞으로 제가 알고 있는 지식 혹은 코드를 다른 사람이 이해하고 함께 개선할 수 있도록 노력하겠습니다.
 - **홍혜원** : 
-- **이승규** : 
-- **최소영** : 
-- **권규리** : 
+- **이승규** : 비전공자로서 데이터의 가능성을 직접 보여주고자 SQL과 파이썬의 기본부터 부딪히며 익혔고, 특히 Streamlit을 활용해 복잡한 웹 지식 없이도 데이터 분석 결과를 직관적인 대시보드로 신속하게 구현할 수 있었습니다.
+- **최소영** : 직접 코드를 짜면서 데이터를 얻지는 못한 점은 아쉬웠지만, 코드를 수정하면서 직접 웹 화면으로 구현해볼 수 있어서 좋은경험이었습니다. 수업 중에 이해 못했던 부분들도 실제로 해보니 다시 정리해볼 수 있었던 것 같습니다. 모든 팀원분들 
+많이 도와주셔서 감사합니다.
+- **권규리** : 첫 프로젝트하면서, 이해못하는 부분이  많아서 속도가 느려서 다른 팀원분들의 코드를 보고 익혔지만 어떻게 구현되는지 확인 후에 앞으로의 공부방법과 동기부여가 되었습니다. 앞으로 조금 더 부족한 부분  채워서  조금 더 보완해서 참여하고 싶습니다. 팀원분들 모두 감사합니다.
