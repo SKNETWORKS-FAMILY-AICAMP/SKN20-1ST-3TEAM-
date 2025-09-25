@@ -109,7 +109,7 @@
 ## 5. Results
 
 ### 5.1. 메인 대시보드 (지역별 자동차 등록 현황 대시보드) 
-<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EB%A9%94%EC%9D%B8%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.png" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EB%A9%94%EC%9D%B8%EB%8C%80%EC%8B%9C%2C%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%ED%98%84%ED%99%A9.png" />
 
 ### 5.2.시도별 자동차 총 등록대수  
 - 기간별 모델 판매 순위 정보 제공  
@@ -117,7 +117,7 @@
 
 ### 5.3. 차종별 합계 및 비중 
 - 기간, 차종별 합계 비중 제공  
-<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%B0%A8%EC%A2%85%2C%EC%9A%A9%EB%8F%84%EB%B3%84%EA%B7%B8%EB%9E%98%ED%94%84.png" />
+<img width="1280" alt="image" src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%EC%B0%A8%EC%A2%85%EB%B3%84%EB%93%B1%EB%A1%9D%EB%B9%84%EC%A4%91.png" />
 
 ### 5.4. FAQ(현대/기아)  
 - 현대/기아 자동차 관련 질문과 답변 제공  
