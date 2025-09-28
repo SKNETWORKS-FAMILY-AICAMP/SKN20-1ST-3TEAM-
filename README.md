@@ -56,7 +56,7 @@
 
 <br>
 
-> ### Architecture Diagram
+### Architecture Diagram
 <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/Architecture_Diagram.png" width="700">
 
 
