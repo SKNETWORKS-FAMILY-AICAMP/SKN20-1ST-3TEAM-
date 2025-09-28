@@ -41,9 +41,9 @@
 - `car_registration` TABLE: 월, 시도, 시군구, 차종별(승용·승합·화물·특수) 등록 현황 저장
 - `region` TABLE: 시도, 시군구
 - `faq` TABLE: 브랜드(현대/기아), 카테고리, 질문·답변 저장
-> ### ERD
+- ### ERD
 > <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/ERD.png" width="700">
-> ### Table Specification
+### Table Specification
 > <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%ED%85%8C%EC%9D%B4%EB%B8%94%EB%AA%85%EC%84%B8%EC%84%9C1.png" width="700">
 > <img src="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN20-1ST-3TEAM-/blob/main/output/image/%ED%85%8C%EC%9D%B4%EB%B8%94%EB%AA%85%EC%84%B8%EC%84%9C2.png" width="700">
 
